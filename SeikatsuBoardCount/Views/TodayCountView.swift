@@ -20,8 +20,21 @@ struct TodayCountView: View {
                     .padding(20)
                 }
             }
-            .navigationTitle("きょうのできた！")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    HStack(alignment: .firstTextBaseline, spacing: 8) {
+                        Text("きょうのできた！")
+                            .font(.headline.weight(.bold))
+                            .foregroundStyle(Color.appText)
+                        Text(CalendarHelper.todayDisplayLabel())
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(.secondary)
+                    }
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.82)
+                }
+
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showingAddItem = true
@@ -85,13 +98,13 @@ private struct TodayCountCard: View {
                     Button {
                         store.decrement(item)
                     } label: {
-                        Text("まちがえた")
+                        Text("もどす")
                             .font(.headline.weight(.bold))
-                            .frame(width: 104, height: 56)
+                            .frame(width: 84, height: 56)
                     }
                     .buttonStyle(.bordered)
                     .tint(.secondary)
-                    .accessibilityLabel("\(item.title)をひとつへらす")
+                    .accessibilityLabel("\(item.title)をひとつもどす")
                 }
             }
         }

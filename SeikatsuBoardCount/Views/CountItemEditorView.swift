@@ -17,7 +17,7 @@ struct CountItemEditorView: View {
         self.mode = mode
         switch mode {
         case .add:
-            _emoji = State(initialValue: "⭐️")
+            _emoji = State(initialValue: "")
             _title = State(initialValue: "")
         case .edit(let item):
             _emoji = State(initialValue: item.emoji)
@@ -86,9 +86,11 @@ struct CountItemEditorView: View {
     private func save() {
         switch mode {
         case .add:
-            store.addItem(title: title, emoji: emoji)
+            let trimmedEmoji = emoji.trimmingCharacters(in: .whitespacesAndNewlines)
+            store.addItem(title: title, emoji: trimmedEmoji.isEmpty ? "⭐️" : trimmedEmoji)
         case .edit(let item):
-            store.updateItem(item, title: title, emoji: emoji)
+            let trimmedEmoji = emoji.trimmingCharacters(in: .whitespacesAndNewlines)
+            store.updateItem(item, title: title, emoji: trimmedEmoji.isEmpty ? "⭐️" : trimmedEmoji)
         }
         dismiss()
     }

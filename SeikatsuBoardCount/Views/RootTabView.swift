@@ -13,9 +13,7 @@ struct RootTabView: View {
                     Label("きろく", systemImage: "calendar")
                 }
 
-            ParentSettingsGateView {
-                SettingsView()
-            }
+            SettingsView()
             .tabItem {
                 Label("せってい", systemImage: "gearshape.fill")
             }
