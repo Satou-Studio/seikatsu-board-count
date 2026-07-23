@@ -3,7 +3,7 @@ import SwiftUI
 struct HistoryView: View {
     @EnvironmentObject private var store: CountStore
     private var days: [Date] {
-        CalendarHelper.recentSevenDays()
+        CalendarHelper.recentDaysInWeekdayOrder()
     }
 
     var body: some View {
@@ -47,9 +47,11 @@ private struct HistoryItemCard: View {
                         let key = CalendarHelper.dayKey(for: day)
                         let count = store.count(for: item.id, dayKey: key)
                         HStack {
-                            Text(CalendarHelper.weekdayLabel(for: day))
+                            Text(
+                                "\(CalendarHelper.weekdayLabel(for: day)) \(CalendarHelper.shortDateLabel(for: day))"
+                            )
                                 .font(.title3.weight(.bold))
-                                .frame(width: 36, alignment: .leading)
+                                .frame(width: 76, alignment: .leading)
                             CountBar(count: count, maxCount: maxCount)
                             Text("\(count)")
                                 .font(.title3.weight(.bold))

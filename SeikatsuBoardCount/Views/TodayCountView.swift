@@ -1,8 +1,10 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct TodayCountView: View {
     @EnvironmentObject private var store: CountStore
     @State private var showingAddItem = false
+    @State private var draggedItem: CountItem?
 
     var body: some View {
         NavigationStack {
@@ -14,9 +16,26 @@ struct TodayCountView: View {
                         totalCard
 
                         ForEach(store.sortedItems) { item in
-                            ReorderableTodayCountCard(item: item)
+                            TodayCountCard(item: item)
+                                .opacity(draggedItem?.id == item.id ? 0.72 : 1)
+                                .scaleEffect(draggedItem?.id == item.id ? 1.02 : 1)
+                                .onDrag {
+                                    draggedItem = item
+                                    return NSItemProvider(object: item.id.uuidString as NSString)
+                                } preview: {
+                                    DragPreview(item: item)
+                                }
+                                .onDrop(
+                                    of: [UTType.text],
+                                    delegate: TodayCardDropDelegate(
+                                        targetItem: item,
+                                        draggedItem: $draggedItem,
+                                        store: store
+                                    )
+                                )
                         }
                     }
+                    .animation(.smooth(duration: 0.24), value: store.sortedItems)
                     .padding(20)
                 }
             }
@@ -68,53 +87,6 @@ struct TodayCountView: View {
     }
 }
 
-private struct ReorderableTodayCountCard: View {
-    @EnvironmentObject private var store: CountStore
-    @State private var cardHeight: CGFloat = 1
-    @State private var isDropTarget = false
-    let item: CountItem
-
-    var body: some View {
-        TodayCountCard(item: item)
-            .background {
-                GeometryReader { proxy in
-                    Color.clear
-                        .onAppear {
-                            cardHeight = proxy.size.height
-                        }
-                        .onChange(of: proxy.size.height) { _, newHeight in
-                            cardHeight = newHeight
-                        }
-                }
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .stroke(Color.appOrange, lineWidth: isDropTarget ? 3 : 0)
-                    .padding(1)
-            }
-            .draggable(item.id.uuidString) {
-                DragPreview(item: item)
-            }
-            .dropDestination(for: String.self) { droppedIDs, location in
-                guard
-                    let droppedID = droppedIDs.first,
-                    let movingID = UUID(uuidString: droppedID)
-                else {
-                    return false
-                }
-
-                store.moveItem(
-                    id: movingID,
-                    relativeTo: item.id,
-                    placeAfter: location.y > cardHeight / 2
-                )
-                return true
-            } isTargeted: { isTargeted in
-                isDropTarget = isTargeted
-            }
-    }
-}
-
 private struct TodayCountCard: View {
     @EnvironmentObject private var store: CountStore
     let item: CountItem
@@ -160,6 +132,39 @@ private struct TodayCountCard: View {
                 }
             }
         }
+    }
+}
+
+private struct TodayCardDropDelegate: DropDelegate {
+    let targetItem: CountItem
+    @Binding var draggedItem: CountItem?
+    let store: CountStore
+
+    func dropEntered(info: DropInfo) {
+        guard
+            let draggedItem,
+            draggedItem.id != targetItem.id,
+            let sourceIndex = store.sortedItems.firstIndex(where: { $0.id == draggedItem.id }),
+            let targetIndex = store.sortedItems.firstIndex(where: { $0.id == targetItem.id })
+        else {
+            return
+        }
+
+        withAnimation(.smooth(duration: 0.24)) {
+            store.moveItems(
+                from: IndexSet(integer: sourceIndex),
+                to: targetIndex > sourceIndex ? targetIndex + 1 : targetIndex
+            )
+        }
+    }
+
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        DropProposal(operation: .move)
+    }
+
+    func performDrop(info: DropInfo) -> Bool {
+        draggedItem = nil
+        return true
     }
 }
 

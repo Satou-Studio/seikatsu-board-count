@@ -80,24 +80,6 @@ final class CountStore: ObservableObject {
         saveOrder(sorted)
     }
 
-    func moveItem(id movingID: UUID, relativeTo targetID: UUID, placeAfter: Bool) {
-        guard movingID != targetID else { return }
-
-        var sorted = sortedItems
-        guard
-            let sourceIndex = sorted.firstIndex(where: { $0.id == movingID }),
-            sorted.contains(where: { $0.id == targetID })
-        else {
-            return
-        }
-
-        let movingItem = sorted.remove(at: sourceIndex)
-        guard let targetIndex = sorted.firstIndex(where: { $0.id == targetID }) else { return }
-        let destination = placeAfter ? targetIndex + 1 : targetIndex
-        sorted.insert(movingItem, at: destination)
-        saveOrder(sorted)
-    }
-
     private func updateCount(for itemID: UUID, dayKey: String, delta: Int) {
         if let index = records.firstIndex(where: { $0.itemID == itemID && $0.dayKey == dayKey }) {
             records[index].count = max(0, records[index].count + delta)
