@@ -41,12 +41,13 @@ struct PrimaryCountButton: View {
     var body: some View {
         Button(action: action) {
             Text("できた！")
-                .font(.system(size: 30, weight: .bold, design: .rounded))
+                .font(.system(size: 23, weight: .bold, design: .rounded))
+                .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
-                .frame(height: 74)
+                .frame(height: 48)
+                .background(Color.appOrange)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         }
-        .buttonStyle(.borderedProminent)
-        .tint(.appOrange)
-        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .buttonStyle(.plain)
     }
 }
