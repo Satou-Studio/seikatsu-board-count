@@ -85,9 +85,9 @@ private struct TodayCountCard: View {
                     Button {
                         store.decrement(item)
                     } label: {
-                        Text("-1")
-                            .font(.title3.weight(.bold))
-                            .frame(width: 64, height: 56)
+                        Text("まちがえた")
+                            .font(.headline.weight(.bold))
+                            .frame(width: 104, height: 56)
                     }
                     .buttonStyle(.bordered)
                     .tint(.secondary)

@@ -33,16 +33,16 @@ struct CountItemEditorView: View {
                 VStack(spacing: 18) {
                     Card {
                         VStack(alignment: .leading, spacing: 16) {
-                            Text("えもじ")
-                                .font(.headline)
-                            TextField("⭐️", text: $emoji)
-                                .font(.system(size: 42))
-                                .textFieldStyle(.roundedBorder)
-
                             Text("なまえ")
                                 .font(.headline)
-                            TextField("おてつだい", text: $title)
+                            TextField("はみがき", text: $title)
                                 .font(.title2.weight(.semibold))
+                                .textFieldStyle(.roundedBorder)
+
+                            Text("マーク")
+                                .font(.headline)
+                            TextField("🪥", text: $emoji)
+                                .font(.system(size: 42))
                                 .textFieldStyle(.roundedBorder)
                         }
                     }
