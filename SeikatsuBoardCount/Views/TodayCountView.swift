@@ -22,7 +22,7 @@ struct TodayCountView: View {
                                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                                         .stroke(
                                             Color.appOrange,
-                                            lineWidth: dropTargetItemID == item.id ? 3 : 0
+                                            lineWidth: draggedItem?.id == item.id ? 3 : 0
                                         )
                                 }
                                 .opacity(draggedItem?.id == item.id ? 0.82 : 1)
