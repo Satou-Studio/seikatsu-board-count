@@ -14,7 +14,7 @@ struct TodayCountView: View {
                         totalCard
 
                         ForEach(store.sortedItems) { item in
-                            TodayCountCard(item: item)
+                            ReorderableTodayCountCard(item: item)
                         }
                     }
                     .padding(20)
@@ -68,6 +68,53 @@ struct TodayCountView: View {
     }
 }
 
+private struct ReorderableTodayCountCard: View {
+    @EnvironmentObject private var store: CountStore
+    @State private var cardHeight: CGFloat = 1
+    @State private var isDropTarget = false
+    let item: CountItem
+
+    var body: some View {
+        TodayCountCard(item: item)
+            .background {
+                GeometryReader { proxy in
+                    Color.clear
+                        .onAppear {
+                            cardHeight = proxy.size.height
+                        }
+                        .onChange(of: proxy.size.height) { _, newHeight in
+                            cardHeight = newHeight
+                        }
+                }
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .stroke(Color.appOrange, lineWidth: isDropTarget ? 3 : 0)
+                    .padding(1)
+            }
+            .draggable(item.id.uuidString) {
+                DragPreview(item: item)
+            }
+            .dropDestination(for: String.self) { droppedIDs, location in
+                guard
+                    let droppedID = droppedIDs.first,
+                    let movingID = UUID(uuidString: droppedID)
+                else {
+                    return false
+                }
+
+                store.moveItem(
+                    id: movingID,
+                    relativeTo: item.id,
+                    placeAfter: location.y > cardHeight / 2
+                )
+                return true
+            } isTargeted: { isTargeted in
+                isDropTarget = isTargeted
+            }
+    }
+}
+
 private struct TodayCountCard: View {
     @EnvironmentObject private var store: CountStore
     let item: CountItem
@@ -88,6 +135,11 @@ private struct TodayCountCard: View {
                     }
 
                     Spacer()
+
+                    Image(systemName: "line.3.horizontal")
+                        .font(.title3.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                        .accessibilityHidden(true)
                 }
 
                 HStack(alignment: .center, spacing: 12) {
@@ -108,5 +160,26 @@ private struct TodayCountCard: View {
                 }
             }
         }
+    }
+}
+
+private struct DragPreview: View {
+    let item: CountItem
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Text(item.emoji)
+                .font(.system(size: 30))
+            Text(item.title)
+                .font(.headline.weight(.bold))
+                .foregroundStyle(Color.appText)
+            Image(systemName: "line.3.horizontal")
+                .foregroundStyle(.secondary)
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 14)
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .shadow(color: .black.opacity(0.12), radius: 8, y: 3)
     }
 }

@@ -77,11 +77,25 @@ final class CountStore: ObservableObject {
     func moveItems(from source: IndexSet, to destination: Int) {
         var sorted = sortedItems
         sorted.move(fromOffsets: source, toOffset: destination)
-        for index in sorted.indices {
-            sorted[index].sortOrder = index
+        saveOrder(sorted)
+    }
+
+    func moveItem(id movingID: UUID, relativeTo targetID: UUID, placeAfter: Bool) {
+        guard movingID != targetID else { return }
+
+        var sorted = sortedItems
+        guard
+            let sourceIndex = sorted.firstIndex(where: { $0.id == movingID }),
+            sorted.contains(where: { $0.id == targetID })
+        else {
+            return
         }
-        items = sorted
-        save()
+
+        let movingItem = sorted.remove(at: sourceIndex)
+        guard let targetIndex = sorted.firstIndex(where: { $0.id == targetID }) else { return }
+        let destination = placeAfter ? targetIndex + 1 : targetIndex
+        sorted.insert(movingItem, at: destination)
+        saveOrder(sorted)
     }
 
     private func updateCount(for itemID: UUID, dayKey: String, delta: Int) {
@@ -138,6 +152,15 @@ final class CountStore: ObservableObject {
                 items[itemIndex].sortOrder = index
             }
         }
+    }
+
+    private func saveOrder(_ sortedItems: [CountItem]) {
+        var reorderedItems = sortedItems
+        for index in reorderedItems.indices {
+            reorderedItems[index].sortOrder = index
+        }
+        items = reorderedItems
+        save()
     }
 }
 

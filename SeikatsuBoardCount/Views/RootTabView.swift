@@ -12,11 +12,6 @@ struct RootTabView: View {
                 .tabItem {
                     Label("きろく", systemImage: "calendar")
                 }
-
-            SettingsView()
-            .tabItem {
-                Label("せってい", systemImage: "gearshape.fill")
-            }
         }
         .tint(.appOrange)
     }
