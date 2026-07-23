@@ -5,6 +5,7 @@ struct TodayCountView: View {
     @EnvironmentObject private var store: CountStore
     @State private var showingAddItem = false
     @State private var draggedItem: CountItem?
+    @State private var dropTargetItemID: UUID?
 
     var body: some View {
         NavigationStack {
@@ -16,26 +17,34 @@ struct TodayCountView: View {
                         totalCard
 
                         ForEach(store.sortedItems) { item in
-                            TodayCountCard(item: item)
-                                .opacity(draggedItem?.id == item.id ? 0.72 : 1)
-                                .scaleEffect(draggedItem?.id == item.id ? 1.02 : 1)
-                                .onDrag {
-                                    draggedItem = item
-                                    return NSItemProvider(object: item.id.uuidString as NSString)
-                                } preview: {
-                                    DragPreview(item: item)
+                            TodayCountCard(item: item, draggedItem: $draggedItem)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                        .stroke(
+                                            Color.appOrange,
+                                            lineWidth: dropTargetItemID == item.id ? 3 : 0
+                                        )
                                 }
+                                .opacity(draggedItem?.id == item.id ? 0.82 : 1)
+                                .scaleEffect(cardScale(for: item))
+                                .zIndex(draggedItem?.id == item.id ? 1 : 0)
                                 .onDrop(
                                     of: [UTType.text],
                                     delegate: TodayCardDropDelegate(
                                         targetItem: item,
                                         draggedItem: $draggedItem,
+                                        dropTargetItemID: $dropTargetItemID,
                                         store: store
                                     )
                                 )
                         }
                     }
-                    .animation(.smooth(duration: 0.24), value: store.sortedItems)
+                    .animation(
+                        .spring(response: 0.48, dampingFraction: 0.72),
+                        value: store.sortedItems
+                    )
+                    .animation(.easeInOut(duration: 0.18), value: draggedItem?.id)
+                    .animation(.easeInOut(duration: 0.18), value: dropTargetItemID)
                     .padding(20)
                 }
             }
@@ -70,6 +79,16 @@ struct TodayCountView: View {
         }
     }
 
+    private func cardScale(for item: CountItem) -> CGFloat {
+        if draggedItem?.id == item.id {
+            return 0.94
+        }
+        if dropTargetItemID == item.id {
+            return 0.97
+        }
+        return 1
+    }
+
     private var totalCard: some View {
         Card {
             HStack(spacing: 16) {
@@ -90,6 +109,7 @@ struct TodayCountView: View {
 private struct TodayCountCard: View {
     @EnvironmentObject private var store: CountStore
     let item: CountItem
+    @Binding var draggedItem: CountItem?
 
     var body: some View {
         Card {
@@ -111,7 +131,15 @@ private struct TodayCountCard: View {
                     Image(systemName: "line.3.horizontal")
                         .font(.title3.weight(.semibold))
                         .foregroundStyle(.secondary)
-                        .accessibilityHidden(true)
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                        .onDrag {
+                            draggedItem = item
+                            return NSItemProvider(object: item.id.uuidString as NSString)
+                        } preview: {
+                            DragPreview(item: item)
+                        }
+                        .accessibilityLabel("\(item.title)をならびかえる")
                 }
 
                 HStack(alignment: .center, spacing: 12) {
@@ -138,6 +166,7 @@ private struct TodayCountCard: View {
 private struct TodayCardDropDelegate: DropDelegate {
     let targetItem: CountItem
     @Binding var draggedItem: CountItem?
+    @Binding var dropTargetItemID: UUID?
     let store: CountStore
 
     func dropEntered(info: DropInfo) {
@@ -150,7 +179,9 @@ private struct TodayCardDropDelegate: DropDelegate {
             return
         }
 
-        withAnimation(.smooth(duration: 0.24)) {
+        dropTargetItemID = targetItem.id
+
+        withAnimation(.spring(response: 0.48, dampingFraction: 0.72)) {
             store.moveItems(
                 from: IndexSet(integer: sourceIndex),
                 to: targetIndex > sourceIndex ? targetIndex + 1 : targetIndex
@@ -164,6 +195,7 @@ private struct TodayCardDropDelegate: DropDelegate {
 
     func performDrop(info: DropInfo) -> Bool {
         draggedItem = nil
+        dropTargetItemID = nil
         return true
     }
 }
