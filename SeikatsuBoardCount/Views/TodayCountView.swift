@@ -5,8 +5,6 @@ struct TodayCountView: View {
     @EnvironmentObject private var store: CountStore
     @State private var showingAddItem = false
     @State private var draggedItem: CountItem?
-    @State private var dropTargetItemID: UUID?
-    @State private var dragResetID = UUID()
 
     var body: some View {
         NavigationStack {
@@ -19,25 +17,12 @@ struct TodayCountView: View {
 
                         ForEach(store.sortedItems) { item in
                             TodayCountCard(item: item, draggedItem: $draggedItem)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                        .stroke(
-                                            Color.appOrange,
-                                            lineWidth: draggedItem?.id == item.id ? 3 : 0
-                                        )
-                                }
-                                .opacity(draggedItem?.id == item.id ? 0.82 : 1)
-                                .scaleEffect(cardScale(for: item))
-                                .zIndex(draggedItem?.id == item.id ? 1 : 0)
                                 .onDrop(
                                     of: [UTType.text],
                                     delegate: TodayCardDropDelegate(
                                         targetItem: item,
                                         draggedItem: $draggedItem,
-                                        dropTargetItemID: $dropTargetItemID,
-                                        store: store,
-                                        onDragActivity: scheduleDragStateReset,
-                                        onDropFinished: clearDragState
+                                        store: store
                                     )
                                 )
                         }
@@ -46,8 +31,6 @@ struct TodayCountView: View {
                         .spring(response: 0.48, dampingFraction: 0.72),
                         value: store.sortedItems
                     )
-                    .animation(.easeInOut(duration: 0.18), value: draggedItem?.id)
-                    .animation(.easeInOut(duration: 0.18), value: dropTargetItemID)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
                 }
@@ -80,34 +63,6 @@ struct TodayCountView: View {
             .sheet(isPresented: $showingAddItem) {
                 CountItemEditorView(mode: .add)
             }
-        }
-    }
-
-    private func cardScale(for item: CountItem) -> CGFloat {
-        if draggedItem?.id == item.id {
-            return 0.94
-        }
-        if dropTargetItemID == item.id {
-            return 0.97
-        }
-        return 1
-    }
-
-    private func scheduleDragStateReset() {
-        let resetID = UUID()
-        dragResetID = resetID
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-            guard dragResetID == resetID else { return }
-            clearDragState()
-        }
-    }
-
-    private func clearDragState() {
-        dragResetID = UUID()
-        withAnimation(.easeOut(duration: 0.16)) {
-            draggedItem = nil
-            dropTargetItemID = nil
         }
     }
 
@@ -196,10 +151,7 @@ private struct TodayCountCard: View {
 private struct TodayCardDropDelegate: DropDelegate {
     let targetItem: CountItem
     @Binding var draggedItem: CountItem?
-    @Binding var dropTargetItemID: UUID?
     let store: CountStore
-    let onDragActivity: () -> Void
-    let onDropFinished: () -> Void
 
     func dropEntered(info: DropInfo) {
         guard
@@ -211,9 +163,6 @@ private struct TodayCardDropDelegate: DropDelegate {
             return
         }
 
-        dropTargetItemID = targetItem.id
-        onDragActivity()
-
         withAnimation(.spring(response: 0.48, dampingFraction: 0.72)) {
             store.moveItems(
                 from: IndexSet(integer: sourceIndex),
@@ -223,12 +172,11 @@ private struct TodayCardDropDelegate: DropDelegate {
     }
 
     func dropUpdated(info: DropInfo) -> DropProposal? {
-        onDragActivity()
         return DropProposal(operation: .move)
     }
 
     func performDrop(info: DropInfo) -> Bool {
-        onDropFinished()
+        draggedItem = nil
         return true
     }
 }
@@ -250,6 +198,10 @@ private struct DragPreview: View {
         .padding(.vertical, 14)
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(Color.appOrange, lineWidth: 3)
+        }
         .shadow(color: .black.opacity(0.12), radius: 8, y: 3)
     }
 }
