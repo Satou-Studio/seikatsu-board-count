@@ -1,10 +1,11 @@
 import SwiftUI
-import UniformTypeIdentifiers
 
 struct TodayCountView: View {
     @EnvironmentObject private var store: CountStore
     @State private var showingAddItem = false
     @State private var draggedItem: CountItem?
+    @State private var dragLocation = CGPoint.zero
+    @State private var itemFrames: [UUID: CGRect] = [:]
 
     var body: some View {
         NavigationStack {
@@ -16,15 +17,24 @@ struct TodayCountView: View {
                         totalCard
 
                         ForEach(store.sortedItems) { item in
-                            TodayCountCard(item: item, draggedItem: $draggedItem)
-                                .onDrop(
-                                    of: [UTType.text],
-                                    delegate: TodayCardDropDelegate(
-                                        targetItem: item,
-                                        draggedItem: $draggedItem,
-                                        store: store
+                            TodayCountCard(
+                                item: item,
+                                onDragChanged: { value in
+                                    updateDrag(for: item, value: value)
+                                },
+                                onDragEnded: endDrag
+                            )
+                            .background {
+                                GeometryReader { proxy in
+                                    Color.clear.preference(
+                                        key: ItemFramePreferenceKey.self,
+                                        value: [
+                                            item.id: proxy.frame(in: .named("todayCountList"))
+                                        ]
                                     )
-                                )
+                                }
+                            }
+                            .opacity(draggedItem?.id == item.id ? 0 : 1)
                         }
                     }
                     .animation(
@@ -34,6 +44,17 @@ struct TodayCountView: View {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
                 }
+
+                if let draggedItem {
+                    DragPreview(item: draggedItem)
+                        .position(dragLocation)
+                        .allowsHitTesting(false)
+                        .zIndex(10)
+                }
+            }
+            .coordinateSpace(name: "todayCountList")
+            .onPreferenceChange(ItemFramePreferenceKey.self) { frames in
+                itemFrames = frames
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -66,6 +87,52 @@ struct TodayCountView: View {
         }
     }
 
+    private func updateDrag(for item: CountItem, value: DragGesture.Value) {
+        if draggedItem?.id != item.id {
+            draggedItem = item
+        }
+        dragLocation = value.location
+
+        let sortedItems = store.sortedItems
+        guard let sourceIndex = sortedItems.firstIndex(where: { $0.id == item.id }) else {
+            return
+        }
+
+        let candidates = sortedItems.filter { $0.id != item.id }
+        guard let targetItem = candidates.min(by: { lhs, rhs in
+            let lhsDistance = abs((itemFrames[lhs.id]?.midY ?? .greatestFiniteMagnitude) - value.location.y)
+            let rhsDistance = abs((itemFrames[rhs.id]?.midY ?? .greatestFiniteMagnitude) - value.location.y)
+            return lhsDistance < rhsDistance
+        }),
+        let targetIndex = sortedItems.firstIndex(where: { $0.id == targetItem.id }),
+        let targetFrame = itemFrames[targetItem.id]
+        else {
+            return
+        }
+
+        if sourceIndex < targetIndex, value.location.y > targetFrame.midY {
+            withAnimation(.spring(response: 0.48, dampingFraction: 0.72)) {
+                store.moveItems(
+                    from: IndexSet(integer: sourceIndex),
+                    to: targetIndex + 1
+                )
+            }
+        } else if sourceIndex > targetIndex, value.location.y < targetFrame.midY {
+            withAnimation(.spring(response: 0.48, dampingFraction: 0.72)) {
+                store.moveItems(
+                    from: IndexSet(integer: sourceIndex),
+                    to: targetIndex
+                )
+            }
+        }
+    }
+
+    private func endDrag() {
+        withAnimation(.easeOut(duration: 0.16)) {
+            draggedItem = nil
+        }
+    }
+
     private var totalCard: some View {
         HStack(spacing: 12) {
             EmojiCircle(emoji: "🌈", size: 46)
@@ -89,7 +156,8 @@ struct TodayCountView: View {
 private struct TodayCountCard: View {
     @EnvironmentObject private var store: CountStore
     let item: CountItem
-    @Binding var draggedItem: CountItem?
+    let onDragChanged: (DragGesture.Value) -> Void
+    let onDragEnded: () -> Void
 
     var body: some View {
         VStack(spacing: 6) {
@@ -112,12 +180,7 @@ private struct TodayCountCard: View {
                     .foregroundStyle(.secondary)
                     .frame(width: 40, height: 40)
                     .contentShape(Rectangle())
-                    .onDrag {
-                        draggedItem = item
-                        return NSItemProvider(object: item.id.uuidString as NSString)
-                    } preview: {
-                        DragPreview(item: item)
-                    }
+                    .gesture(reorderGesture)
                     .accessibilityLabel("\(item.title)をならびかえる")
             }
 
@@ -146,38 +209,33 @@ private struct TodayCountCard: View {
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .shadow(color: .black.opacity(0.07), radius: 6, x: 0, y: 3)
     }
+
+    private var reorderGesture: some Gesture {
+        LongPressGesture(minimumDuration: 0.25, maximumDistance: 12)
+            .sequenced(
+                before: DragGesture(
+                    minimumDistance: 0,
+                    coordinateSpace: .named("todayCountList")
+                )
+            )
+            .onChanged { value in
+                if case .second(true, let dragValue?) = value {
+                    onDragChanged(dragValue)
+                }
+            }
+            .onEnded { _ in
+                onDragEnded()
+            }
+    }
 }
 
-private struct TodayCardDropDelegate: DropDelegate {
-    let targetItem: CountItem
-    @Binding var draggedItem: CountItem?
-    let store: CountStore
+private struct ItemFramePreferenceKey: PreferenceKey {
+    static var defaultValue: [UUID: CGRect] = [:]
 
-    func dropEntered(info: DropInfo) {
-        guard
-            let draggedItem,
-            draggedItem.id != targetItem.id,
-            let sourceIndex = store.sortedItems.firstIndex(where: { $0.id == draggedItem.id }),
-            let targetIndex = store.sortedItems.firstIndex(where: { $0.id == targetItem.id })
-        else {
-            return
-        }
-
-        withAnimation(.spring(response: 0.48, dampingFraction: 0.72)) {
-            store.moveItems(
-                from: IndexSet(integer: sourceIndex),
-                to: targetIndex > sourceIndex ? targetIndex + 1 : targetIndex
-            )
-        }
-    }
-
-    func dropUpdated(info: DropInfo) -> DropProposal? {
-        return DropProposal(operation: .move)
-    }
-
-    func performDrop(info: DropInfo) -> Bool {
-        draggedItem = nil
-        return true
+    static func reduce(value: inout [UUID: CGRect], nextValue: () -> [UUID: CGRect]) {
+        value.merge(nextValue(), uniquingKeysWith: { _, newValue in
+            newValue
+        })
     }
 }
 
