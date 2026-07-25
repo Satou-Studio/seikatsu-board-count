@@ -8,13 +8,11 @@ enum CalendarHelper {
         return String(format: "%04d-%02d-%02d", components.year ?? 0, components.month ?? 0, components.day ?? 0)
     }
 
-    static func recentDaysInWeekdayOrder(from date: Date = Date()) -> [Date] {
+    static func recentDaysNewestFirst(from date: Date = Date()) -> [Date] {
         let today = calendar.startOfDay(for: date)
-        let todayWeekday = calendar.component(.weekday, from: today)
 
-        return (1...7).compactMap { weekday in
-            let daysAgo = (todayWeekday - weekday + 7) % 7
-            return calendar.date(byAdding: .day, value: -daysAgo, to: today)
+        return (0..<7).compactMap { daysAgo in
+            calendar.date(byAdding: .day, value: -daysAgo, to: today)
         }
     }
 

@@ -3,7 +3,7 @@ import SwiftUI
 struct HistoryView: View {
     @EnvironmentObject private var store: CountStore
     private var days: [Date] {
-        CalendarHelper.recentDaysInWeekdayOrder()
+        CalendarHelper.recentDaysNewestFirst()
     }
 
     var body: some View {
