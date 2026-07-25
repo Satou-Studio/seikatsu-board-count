@@ -24,7 +24,7 @@ enum CalendarHelper {
 
     static func shortDateLabel(for date: Date) -> String {
         let components = calendar.dateComponents([.month, .day], from: date)
-        return "\(components.month ?? 0)/\(components.day ?? 0)"
+        return "\(components.month ?? 0)月\(components.day ?? 0)日"
     }
 
     static func todayDisplayLabel(from date: Date = Date()) -> String {
