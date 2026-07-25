@@ -13,8 +13,8 @@ struct HistoryView: View {
 
                 ScrollView {
                     VStack(spacing: 16) {
-                        ForEach(store.sortedItems) { item in
-                            HistoryItemCard(item: item, days: days)
+                        ForEach(days, id: \.self) { day in
+                            HistoryDayCard(day: day)
                         }
                     }
                     .padding(20)
@@ -25,38 +25,90 @@ struct HistoryView: View {
     }
 }
 
-private struct HistoryItemCard: View {
+private struct HistoryDayCard: View {
     @EnvironmentObject private var store: CountStore
-    let item: CountItem
-    let days: [Date]
+    let day: Date
     private let maxCount = 5
+
+    private var dayKey: String {
+        CalendarHelper.dayKey(for: day)
+    }
+
+    private var completedItems: [CountItem] {
+        store.sortedItems.filter {
+            store.count(for: $0.id, dayKey: dayKey) > 0
+        }
+    }
+
+    private var total: Int {
+        completedItems.reduce(0) {
+            $0 + store.count(for: $1.id, dayKey: dayKey)
+        }
+    }
+
+    private var isToday: Bool {
+        dayKey == CalendarHelper.dayKey()
+    }
 
     var body: some View {
         Card {
-            VStack(alignment: .leading, spacing: 14) {
-                HStack(spacing: 12) {
-                    EmojiCircle(emoji: item.emoji, size: 48)
-                    Text(item.title)
+            VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack(alignment: .firstTextBaseline) {
+                        Text(
+                            "\(CalendarHelper.weekdayLabel(for: day)) \(CalendarHelper.shortDateLabel(for: day))"
+                        )
                         .font(.title2.weight(.bold))
                         .foregroundStyle(Color.appText)
-                    Spacer()
+
+                        if isToday {
+                            Text("きょう")
+                                .font(.headline.weight(.bold))
+                                .foregroundStyle(Color.appOrange)
+                        }
+
+                        Spacer()
+                    }
+
+                    Text("ぜんぶで \(total)かい")
+                        .font(.system(size: 30, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color.appGreen)
                 }
 
-                VStack(spacing: 8) {
-                    ForEach(days, id: \.self) { day in
-                        let key = CalendarHelper.dayKey(for: day)
-                        let count = store.count(for: item.id, dayKey: key)
-                        HStack {
-                            Text(
-                                "\(CalendarHelper.weekdayLabel(for: day)) \(CalendarHelper.shortDateLabel(for: day))"
-                            )
-                                .font(.title3.weight(.bold))
-                                .frame(width: 76, alignment: .leading)
-                            CountBar(count: count, maxCount: maxCount)
-                            Text("\(count)")
-                                .font(.title3.weight(.bold))
-                                .foregroundStyle(Color.appGreen)
-                                .frame(width: 42, alignment: .trailing)
+                Divider()
+
+                if completedItems.isEmpty {
+                    Text("まだ きろくは ないよ")
+                        .font(.headline.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, minHeight: 44, alignment: .center)
+                } else {
+                    VStack(spacing: 14) {
+                        ForEach(completedItems) { item in
+                            let count = store.count(for: item.id, dayKey: dayKey)
+
+                            VStack(spacing: 7) {
+                                HStack(spacing: 10) {
+                                    EmojiCircle(emoji: item.emoji, size: 40)
+
+                                    Text(item.title)
+                                        .font(.headline.weight(.bold))
+                                        .foregroundStyle(Color.appText)
+
+                                    Spacer()
+
+                                    Text("\(count)かい")
+                                        .font(.title3.weight(.bold))
+                                        .foregroundStyle(Color.appGreen)
+                                }
+
+                                HStack(spacing: 10) {
+                                    Color.clear
+                                        .frame(width: 40, height: 1)
+
+                                    CountBar(count: count, maxCount: maxCount)
+                                }
+                            }
                         }
                     }
                 }
