@@ -22,10 +22,10 @@ final class CountStore: ObservableObject {
         }
     }
 
-    var todayTotal: Int {
-        let today = CalendarHelper.dayKey()
+    func total(on date: Date = Date()) -> Int {
+        let dayKey = CalendarHelper.dayKey(for: date)
         return records
-            .filter { $0.dayKey == today }
+            .filter { $0.dayKey == dayKey }
             .reduce(0) { $0 + $1.count }
     }
 
@@ -37,12 +37,12 @@ final class CountStore: ObservableObject {
         records.first { $0.itemID == itemID && $0.dayKey == dayKey }?.count ?? 0
     }
 
-    func increment(_ item: CountItem) {
-        updateCount(for: item.id, dayKey: CalendarHelper.dayKey(), delta: 1)
+    func increment(_ item: CountItem, on date: Date = Date()) {
+        updateCount(for: item.id, dayKey: CalendarHelper.dayKey(for: date), delta: 1)
     }
 
-    func decrement(_ item: CountItem) {
-        updateCount(for: item.id, dayKey: CalendarHelper.dayKey(), delta: -1)
+    func decrement(_ item: CountItem, on date: Date = Date()) {
+        updateCount(for: item.id, dayKey: CalendarHelper.dayKey(for: date), delta: -1)
     }
 
     func addItem(title: String, emoji: String) {

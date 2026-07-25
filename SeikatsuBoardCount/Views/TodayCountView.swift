@@ -3,9 +3,15 @@ import SwiftUI
 struct TodayCountView: View {
     @EnvironmentObject private var store: CountStore
     @State private var showingAddItem = false
+    @State private var showingDatePicker = false
+    @State private var selectedDate = CalendarHelper.calendar.startOfDay(for: Date())
     @State private var draggedItem: CountItem?
     @State private var dragLocation = CGPoint.zero
     @State private var itemFrames: [UUID: CGRect] = [:]
+
+    private var isToday: Bool {
+        CalendarHelper.dayKey(for: selectedDate) == CalendarHelper.dayKey()
+    }
 
     var body: some View {
         NavigationStack {
@@ -19,6 +25,8 @@ struct TodayCountView: View {
                         ForEach(store.sortedItems) { item in
                             TodayCountCard(
                                 item: item,
+                                date: selectedDate,
+                                isToday: isToday,
                                 onDragChanged: { value in
                                     updateDrag(for: item, value: value)
                                 },
@@ -59,16 +67,25 @@ struct TodayCountView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    HStack(alignment: .firstTextBaseline, spacing: 8) {
-                        Text("きょうのできた！")
-                            .font(.headline.weight(.bold))
-                            .foregroundStyle(Color.appText)
-                        Text(CalendarHelper.todayDisplayLabel())
-                            .font(.subheadline.weight(.semibold))
-                            .foregroundStyle(.secondary)
+                    Button {
+                        showingDatePicker = true
+                    } label: {
+                        HStack(alignment: .firstTextBaseline, spacing: 6) {
+                            Text(isToday ? "きょうのできた！" : "このひのできた！")
+                                .font(.headline.weight(.bold))
+                                .foregroundStyle(Color.appText)
+                            Text(CalendarHelper.todayDisplayLabel(from: selectedDate))
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(.secondary)
+                            Image(systemName: "calendar")
+                                .font(.caption.weight(.bold))
+                                .foregroundStyle(Color.appOrange)
+                        }
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.76)
                     }
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.82)
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("きろくするひをえらぶ")
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -83,6 +100,9 @@ struct TodayCountView: View {
             }
             .sheet(isPresented: $showingAddItem) {
                 CountItemEditorView(mode: .add)
+            }
+            .sheet(isPresented: $showingDatePicker) {
+                RecordDatePickerView(selectedDate: $selectedDate)
             }
         }
     }
@@ -137,10 +157,10 @@ struct TodayCountView: View {
         HStack(spacing: 12) {
             EmojiCircle(emoji: "🌈", size: 46)
             VStack(alignment: .leading, spacing: 0) {
-                Text("きょうのできたごうけい")
+                Text(isToday ? "きょうのできたごうけい" : "このひのできたごうけい")
                     .font(.subheadline.weight(.bold))
                     .foregroundStyle(Color.appText)
-                Text("\(store.todayTotal)かい")
+                Text("\(store.total(on: selectedDate))かい")
                     .font(.system(size: 32, weight: .bold, design: .rounded))
                     .foregroundStyle(Color.appGreen)
             }
@@ -156,6 +176,8 @@ struct TodayCountView: View {
 private struct TodayCountCard: View {
     @EnvironmentObject private var store: CountStore
     let item: CountItem
+    let date: Date
+    let isToday: Bool
     let onDragChanged: (DragGesture.Value) -> Void
     let onDragEnded: () -> Void
 
@@ -168,7 +190,7 @@ private struct TodayCountCard: View {
                     Text(item.title)
                         .font(.headline.weight(.bold))
                         .foregroundStyle(Color.appText)
-                    Text("きょう \(store.count(for: item))かい")
+                    Text("\(isToday ? "きょう" : "このひ") \(store.count(for: item, on: date))かい")
                         .font(.system(size: 22, weight: .bold, design: .rounded))
                         .foregroundStyle(Color.appBlue)
                 }
@@ -186,11 +208,11 @@ private struct TodayCountCard: View {
 
             HStack(alignment: .center, spacing: 8) {
                 PrimaryCountButton {
-                    store.increment(item)
+                    store.increment(item, on: date)
                 }
 
                 Button {
-                    store.decrement(item)
+                    store.decrement(item, on: date)
                 } label: {
                     Text("もどす")
                         .font(.subheadline.weight(.bold))
@@ -226,6 +248,56 @@ private struct TodayCountCard: View {
             .onEnded { _ in
                 onDragEnded()
             }
+    }
+}
+
+private struct RecordDatePickerView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Binding var selectedDate: Date
+
+    private var today: Date {
+        CalendarHelper.calendar.startOfDay(for: Date())
+    }
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 20) {
+                DatePicker(
+                    "きろくするひ",
+                    selection: $selectedDate,
+                    in: ...today,
+                    displayedComponents: .date
+                )
+                .datePickerStyle(.graphical)
+                .labelsHidden()
+                .environment(\.locale, Locale(identifier: "ja_JP"))
+
+                if CalendarHelper.dayKey(for: selectedDate) != CalendarHelper.dayKey() {
+                    Button("きょうにもどる") {
+                        selectedDate = today
+                        dismiss()
+                    }
+                    .font(.headline.weight(.bold))
+                    .foregroundStyle(Color.appOrange)
+                }
+
+                Spacer(minLength: 0)
+            }
+            .padding()
+            .background(Color.appBackground.ignoresSafeArea())
+            .navigationTitle("ひにちをえらぶ")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("けってい") {
+                        selectedDate = CalendarHelper.calendar.startOfDay(for: selectedDate)
+                        dismiss()
+                    }
+                    .fontWeight(.bold)
+                }
+            }
+        }
+        .presentationDetents([.medium])
     }
 }
 
