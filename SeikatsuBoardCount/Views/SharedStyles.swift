@@ -6,6 +6,7 @@ extension Color {
     static let appGreen = Color(red: 0.36, green: 0.68, blue: 0.36)
     static let appBlue = Color(red: 0.28, green: 0.55, blue: 0.86)
     static let appText = Color(red: 0.22, green: 0.18, blue: 0.14)
+    static let appSecondaryText = Color(red: 0.38, green: 0.32, blue: 0.27)
 }
 
 struct Card<Content: View>: View {

@@ -19,6 +19,8 @@
 		8B10000A2C2EA00000100001 /* ParentSettingsGateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B10010A2C2EA00000100001 /* ParentSettingsGateView.swift */; };
 		8B10000B2C2EA00000100001 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B10010B2C2EA00000100001 /* SettingsView.swift */; };
 		8B10000C2C2EA00000100001 /* CountItemEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B10010C2C2EA00000100001 /* CountItemEditorView.swift */; };
+		8B10000D2C2EA00000100001 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8B10010D2C2EA00000100001 /* PrivacyInfo.xcprivacy */; };
+		8B10000E2C2EA00000100001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B10010E2C2EA00000100001 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +37,8 @@
 		8B10010A2C2EA00000100001 /* ParentSettingsGateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentSettingsGateView.swift; sourceTree = "<group>"; };
 		8B10010B2C2EA00000100001 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8B10010C2C2EA00000100001 /* CountItemEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountItemEditorView.swift; sourceTree = "<group>"; };
+		8B10010D2C2EA00000100001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		8B10010E2C2EA00000100001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,8 @@
 			isa = PBXGroup;
 			children = (
 				8B1001012C2EA00000100001 /* SeikatsuBoardCountApp.swift */,
+				8B10010E2C2EA00000100001 /* Assets.xcassets */,
+				8B10010D2C2EA00000100001 /* PrivacyInfo.xcprivacy */,
 				8B1000422C2EA00000100001 /* Models */,
 				8B1000432C2EA00000100001 /* Stores */,
 				8B1000442C2EA00000100001 /* Views */,
@@ -174,6 +180,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B10000E2C2EA00000100001 /* Assets.xcassets in Resources */,
+				8B10000D2C2EA00000100001 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,6 +337,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "生活ボード カウント";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -341,7 +350,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -356,6 +365,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "生活ボード カウント";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -368,7 +378,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

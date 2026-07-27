@@ -56,7 +56,7 @@ private struct HistoryDayCard: View {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(alignment: .firstTextBaseline) {
                         Text(
-                            "\(CalendarHelper.weekdayLabel(for: day)) \(CalendarHelper.shortDateLabel(for: day))"
+                            "\(CalendarHelper.shortDateLabel(for: day))（\(CalendarHelper.weekdayLabel(for: day))）"
                         )
                         .font(.title2.weight(.bold))
                         .foregroundStyle(Color.appText)
@@ -80,7 +80,7 @@ private struct HistoryDayCard: View {
                 if completedItems.isEmpty {
                     Text("まだ きろくは ないよ")
                         .font(.headline.weight(.semibold))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.appSecondaryText)
                         .frame(maxWidth: .infinity, minHeight: 44, alignment: .center)
                 } else {
                     VStack(spacing: 14) {

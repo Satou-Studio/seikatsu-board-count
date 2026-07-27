@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TodayCountView: View {
     @EnvironmentObject private var store: CountStore
+    @Environment(\.scenePhase) private var scenePhase
     @State private var showingAddItem = false
     @State private var showingDatePicker = false
     @State private var selectedDate = CalendarHelper.calendar.startOfDay(for: Date())
@@ -76,10 +77,10 @@ struct TodayCountView: View {
                                 .foregroundStyle(Color.appText)
                             Text(CalendarHelper.todayDisplayLabel(from: selectedDate))
                                 .font(.subheadline.weight(.semibold))
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(Color.appSecondaryText)
                             Image(systemName: "calendar")
-                                .font(.caption.weight(.bold))
-                                .foregroundStyle(Color.appOrange)
+                                .font(.subheadline.weight(.bold))
+                                .foregroundStyle(Color.appText)
                         }
                         .lineLimit(1)
                         .minimumScaleFactor(0.76)
@@ -104,7 +105,22 @@ struct TodayCountView: View {
             .sheet(isPresented: $showingDatePicker) {
                 RecordDatePickerView(selectedDate: $selectedDate)
             }
+            .onAppear {
+                selectToday()
+            }
+            .onChange(of: scenePhase) { _, newPhase in
+                if newPhase == .active {
+                    selectToday()
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
+                selectToday()
+            }
         }
+    }
+
+    private func selectToday() {
+        selectedDate = CalendarHelper.calendar.startOfDay(for: Date())
     }
 
     private func updateDrag(for item: CountItem, value: DragGesture.Value) {
@@ -188,10 +204,10 @@ private struct TodayCountCard: View {
 
                 VStack(alignment: .leading, spacing: 0) {
                     Text(item.title)
-                        .font(.headline.weight(.bold))
+                        .font(.title2.weight(.bold))
                         .foregroundStyle(Color.appText)
                     Text("\(isToday ? "きょう" : "このひ") \(store.count(for: item, on: date))かい")
-                        .font(.system(size: 22, weight: .bold, design: .rounded))
+                        .font(.headline.weight(.bold))
                         .foregroundStyle(Color.appBlue)
                 }
 
@@ -199,7 +215,7 @@ private struct TodayCountCard: View {
 
                 Image(systemName: "line.3.horizontal")
                     .font(.headline.weight(.semibold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.appSecondaryText)
                     .frame(width: 40, height: 40)
                     .contentShape(Rectangle())
                     .gesture(reorderGesture)
@@ -216,9 +232,9 @@ private struct TodayCountCard: View {
                 } label: {
                     Text("もどす")
                         .font(.subheadline.weight(.bold))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.appSecondaryText)
                         .frame(width: 68, height: 48)
-                        .background(Color.secondary.opacity(0.12))
+                        .background(Color.appSecondaryText.opacity(0.14))
                         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 }
                 .buttonStyle(.plain)
@@ -322,7 +338,7 @@ private struct DragPreview: View {
                 .font(.headline.weight(.bold))
                 .foregroundStyle(Color.appText)
             Image(systemName: "line.3.horizontal")
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.appSecondaryText)
         }
         .padding(.horizontal, 18)
         .padding(.vertical, 14)
