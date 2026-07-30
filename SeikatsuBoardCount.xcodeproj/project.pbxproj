@@ -16,8 +16,6 @@
 		8B1000072C2EA00000100001 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1001072C2EA00000100001 /* RootTabView.swift */; };
 		8B1000082C2EA00000100001 /* TodayCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1001082C2EA00000100001 /* TodayCountView.swift */; };
 		8B1000092C2EA00000100001 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1001092C2EA00000100001 /* HistoryView.swift */; };
-		8B10000A2C2EA00000100001 /* ParentSettingsGateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B10010A2C2EA00000100001 /* ParentSettingsGateView.swift */; };
-		8B10000B2C2EA00000100001 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B10010B2C2EA00000100001 /* SettingsView.swift */; };
 		8B10000C2C2EA00000100001 /* CountItemEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B10010C2C2EA00000100001 /* CountItemEditorView.swift */; };
 		8B10000D2C2EA00000100001 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8B10010D2C2EA00000100001 /* PrivacyInfo.xcprivacy */; };
 		8B10000E2C2EA00000100001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B10010E2C2EA00000100001 /* Assets.xcassets */; };
@@ -34,8 +32,6 @@
 		8B1001072C2EA00000100001 /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		8B1001082C2EA00000100001 /* TodayCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCountView.swift; sourceTree = "<group>"; };
 		8B1001092C2EA00000100001 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
-		8B10010A2C2EA00000100001 /* ParentSettingsGateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentSettingsGateView.swift; sourceTree = "<group>"; };
-		8B10010B2C2EA00000100001 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8B10010C2C2EA00000100001 /* CountItemEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountItemEditorView.swift; sourceTree = "<group>"; };
 		8B10010D2C2EA00000100001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8B10010E2C2EA00000100001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -98,8 +94,6 @@
 				8B1001072C2EA00000100001 /* RootTabView.swift */,
 				8B1001082C2EA00000100001 /* TodayCountView.swift */,
 				8B1001092C2EA00000100001 /* HistoryView.swift */,
-				8B10010A2C2EA00000100001 /* ParentSettingsGateView.swift */,
-				8B10010B2C2EA00000100001 /* SettingsView.swift */,
 				8B10010C2C2EA00000100001 /* CountItemEditorView.swift */,
 			);
 			path = Views;
@@ -201,8 +195,6 @@
 				8B1000072C2EA00000100001 /* RootTabView.swift in Sources */,
 				8B1000082C2EA00000100001 /* TodayCountView.swift in Sources */,
 				8B1000092C2EA00000100001 /* HistoryView.swift in Sources */,
-				8B10000A2C2EA00000100001 /* ParentSettingsGateView.swift in Sources */,
-				8B10000B2C2EA00000100001 /* SettingsView.swift in Sources */,
 				8B10000C2C2EA00000100001 /* CountItemEditorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
