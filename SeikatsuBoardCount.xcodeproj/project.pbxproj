@@ -328,7 +328,7 @@
 				DEVELOPMENT_TEAM = 4W95W79JT2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "生活ボード カウント";
+				INFOPLIST_KEY_CFBundleDisplayName = "生活ボードカウント";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -356,7 +356,7 @@
 				DEVELOPMENT_TEAM = 4W95W79JT2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "生活ボード カウント";
+				INFOPLIST_KEY_CFBundleDisplayName = "生活ボードカウント";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
