@@ -28,6 +28,14 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <Testables>
+         <TestableReference skipped = "NO">
+            <BuildableReference BuildableIdentifier = "primary" BlueprintIdentifier = "C03000000000000000000004" BuildableName = "SeikatsuBoardCountUITests.xctest" BlueprintName = "SeikatsuBoardCountUITests" ReferencedContainer = "container:SeikatsuBoardCount.xcodeproj"/>
+         </TestableReference>
+         <TestableReference skipped = "NO">
+            <BuildableReference BuildableIdentifier = "primary" BlueprintIdentifier = "C01000000000000000000004" BuildableName = "SeikatsuBoardCountTests.xctest" BlueprintName = "SeikatsuBoardCountTests" ReferencedContainer = "container:SeikatsuBoardCount.xcodeproj"/>
+         </TestableReference>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"

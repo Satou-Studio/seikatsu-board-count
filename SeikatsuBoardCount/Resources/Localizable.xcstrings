@@ -1,0 +1,16 @@
+{
+  "sourceLanguage" : "ja",
+  "strings" : {
+    "recovery.title" : { "localizations" : { "ja" : { "stringUnit" : { "state" : "translated", "value" : "記録を読み込めませんでした" } } } },
+    "recovery.explanation" : { "localizations" : { "ja" : { "stringUnit" : { "state" : "translated", "value" : "元のデータを守るため、記録の追加や変更を止めています。元のデータは上書きしていません。" } } } },
+    "recovery.options" : { "localizations" : { "ja" : { "stringUnit" : { "state" : "translated", "value" : "再読み込みしても変わらない場合は、元データの控えをこの端末に残し、空の状態から始めることができます。控えから記録を元どおりに戻せるとは限りません。アプリを削除すると控えも消えるため、削除しないでください。" } } } },
+    "recovery.retry" : { "localizations" : { "ja" : { "stringUnit" : { "state" : "translated", "value" : "もう一度読み込む" } } } },
+    "recovery.startOver" : { "localizations" : { "ja" : { "stringUnit" : { "state" : "translated", "value" : "空の状態から始める…" } } } },
+    "recovery.confirmTitle" : { "localizations" : { "ja" : { "stringUnit" : { "state" : "translated", "value" : "これまでの項目と記録を使わずに始めますか？" } } } },
+    "recovery.confirmMessage" : { "localizations" : { "ja" : { "stringUnit" : { "state" : "translated", "value" : "元データの控えをこの端末に保存してから、新しい記録を始めます。以前の記録は表示されなくなります。控えを保存できない場合は初期化しません。控えから自動で復元する機能はありません。" } } } },
+    "recovery.confirm" : { "localizations" : { "ja" : { "stringUnit" : { "state" : "translated", "value" : "控えを残して始める" } } } },
+    "recovery.cancel" : { "localizations" : { "ja" : { "stringUnit" : { "state" : "translated", "value" : "キャンセル" } } } },
+    "recovery.backupFailed" : { "localizations" : { "ja" : { "stringUnit" : { "state" : "translated", "value" : "控えを保存できなかったため、初期化していません。元のデータはそのままです。端末の空き容量などを確認してください。" } } } }
+  },
+  "version" : "1.0"
+}

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C03000000000000000000001 = {isa = PBXBuildFile; fileRef = C03000000000000000000002; };
+		C02000000000000000000001 = {isa = PBXBuildFile; fileRef = C02000000000000000000002; };
+		C01000000000000000000001 /* CountStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01000000000000000000002; };
 		8B1000012C2EA00000100001 /* SeikatsuBoardCountApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1001012C2EA00000100001 /* SeikatsuBoardCountApp.swift */; };
 		8B1000022C2EA00000100001 /* CountItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1001022C2EA00000100001 /* CountItem.swift */; };
 		8B1000032C2EA00000100001 /* CountRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1001032C2EA00000100001 /* CountRecord.swift */; };
@@ -22,6 +25,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C03000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeikatsuBoardCountUITests/RecoveryUITests.swift; sourceTree = SOURCE_ROOT; };
+		C03000000000000000000003 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = SeikatsuBoardCountUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C02000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Resources/Localizable.xcstrings; sourceTree = "<group>"; };
+		C01000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeikatsuBoardCountTests/CountStoreTests.swift; sourceTree = SOURCE_ROOT; };
+		C01000000000000000000003 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = SeikatsuBoardCountTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B1000202C2EA00000100001 /* SeikatsuBoardCount.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeikatsuBoardCount.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B1001012C2EA00000100001 /* SeikatsuBoardCountApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeikatsuBoardCountApp.swift; sourceTree = "<group>"; };
 		8B1001022C2EA00000100001 /* CountItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountItem.swift; sourceTree = "<group>"; };
@@ -51,6 +59,8 @@
 		8B1000402C2EA00000100001 = {
 			isa = PBXGroup;
 			children = (
+				C03000000000000000000002,
+				C01000000000000000000002,
 				8B1000412C2EA00000100001 /* SeikatsuBoardCount */,
 				8B1000502C2EA00000100001 /* Products */,
 			);
@@ -59,6 +69,7 @@
 		8B1000412C2EA00000100001 /* SeikatsuBoardCount */ = {
 			isa = PBXGroup;
 			children = (
+				C02000000000000000000002,
 				8B1001012C2EA00000100001 /* SeikatsuBoardCountApp.swift */,
 				8B10010E2C2EA00000100001 /* Assets.xcassets */,
 				8B10010D2C2EA00000100001 /* PrivacyInfo.xcprivacy */,
@@ -110,6 +121,8 @@
 		8B1000502C2EA00000100001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				C03000000000000000000003,
+				C01000000000000000000003,
 				8B1000202C2EA00000100001 /* SeikatsuBoardCount.app */,
 			);
 			name = Products;
@@ -118,6 +131,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		C03000000000000000000004 = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03000000000000000000005;
+			buildPhases = (C03000000000000000000006,);
+			buildRules = ();
+			dependencies = (C03000000000000000000007,);
+			name = SeikatsuBoardCountUITests;
+			productName = SeikatsuBoardCountUITests;
+			productReference = C03000000000000000000003;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		C01000000000000000000004 = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01000000000000000000005;
+			buildPhases = (C01000000000000000000006,);
+			buildRules = ();
+			dependencies = (C01000000000000000000007,);
+			name = SeikatsuBoardCountTests;
+			productName = SeikatsuBoardCountTests;
+			productReference = C01000000000000000000003;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		8B1000602C2EA00000100001 /* SeikatsuBoardCount */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8B1000902C2EA00000100001 /* Build configuration list for PBXNativeTarget "SeikatsuBoardCount" */;
@@ -165,6 +200,8 @@
 			projectRoot = "";
 			targets = (
 				8B1000602C2EA00000100001 /* SeikatsuBoardCount */,
+				C03000000000000000000004,
+				C01000000000000000000004,
 			);
 		};
 /* End PBXProject section */
@@ -174,6 +211,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C02000000000000000000001,
 				8B10000E2C2EA00000100001 /* Assets.xcassets in Resources */,
 				8B10000D2C2EA00000100001 /* PrivacyInfo.xcprivacy in Resources */,
 			);
@@ -182,6 +220,8 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C03000000000000000000006 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (C03000000000000000000001,); runOnlyForDeploymentPostprocessing = 0; };
+		C01000000000000000000006 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (C01000000000000000000001,); runOnlyForDeploymentPostprocessing = 0; };
 		8B1000702C2EA00000100001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -202,6 +242,56 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		C03000000000000000000008 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				TEST_TARGET_NAME = SeikatsuBoardCount;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.saku.seikatsuboardcount.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		C03000000000000000000009 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				TEST_TARGET_NAME = SeikatsuBoardCount;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.saku.seikatsuboardcount.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		C01000000000000000000008 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SeikatsuBoardCount.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SeikatsuBoardCount";
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.saku.seikatsuboardcount.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		C01000000000000000000009 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SeikatsuBoardCount.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SeikatsuBoardCount";
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.saku.seikatsuboardcount.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		8B1000632C2EA00000100001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -377,6 +467,8 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C03000000000000000000005 = {isa = XCConfigurationList; buildConfigurations = (C03000000000000000000008,C03000000000000000000009,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		C01000000000000000000005 = {isa = XCConfigurationList; buildConfigurations = (C01000000000000000000008,C01000000000000000000009,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 		8B1000622C2EA00000100001 /* Build configuration list for PBXProject "SeikatsuBoardCount" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -396,6 +488,10 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+		C03000000000000000000007 = {isa = PBXTargetDependency; target = 8B1000602C2EA00000100001; targetProxy = C0300000000000000000000A; };
+		C0300000000000000000000A = {isa = PBXContainerItemProxy; containerPortal = 8B1000612C2EA00000100001; proxyType = 1; remoteGlobalIDString = 8B1000602C2EA00000100001; remoteInfo = SeikatsuBoardCount; };
+		C01000000000000000000007 = {isa = PBXTargetDependency; target = 8B1000602C2EA00000100001; targetProxy = C0100000000000000000000A; };
+		C0100000000000000000000A = {isa = PBXContainerItemProxy; containerPortal = 8B1000612C2EA00000100001; proxyType = 1; remoteGlobalIDString = 8B1000602C2EA00000100001; remoteInfo = SeikatsuBoardCount; };
 	};
 	rootObject = 8B1000612C2EA00000100001 /* Project object */;
 }
