@@ -1,6 +1,6 @@
 # 生活ボードカウント 1.0.1 / Build 2
 
-更新日: 2026-09-08
+更新日: 2026-09-09
 
 ## 採番と対象
 
@@ -10,7 +10,7 @@
 - Bundle ID: `com.saku.seikatsuboardcount`、Apple ID: `6794626819`、Team: `4W95W79JT2`。
 - Project / Target / Scheme: `SeikatsuBoardCount`。iPhone専用、iOS 17以上を維持。
 - ホーム画面・次回App Store名: `生活ボードカウント`。
-- 修正ソース: `e79a25f`。採番コミットとArchiveの対応は作成後に記録する。
+- 修正ソース: `e79a25f`。採番・Archive元コミット: `2cf7ac36a6c2e417b209853c51a42c5db98ce0a2`。
 
 ## このバージョンの最新情報
 
@@ -21,7 +21,7 @@
 ・読み込みに問題がある場合の案内と、元データの控えを残して空の状態から始める操作を追加しました。
 ・アプリの表示名を「生活ボードカウント」に統一しました。
 
-## 審査メモ案
+## 保存済み審査メモ
 
 This update improves local saved-data protection. No account, login, ads, in-app purchases, or server connection is required. Existing item IDs, daily records, and storage keys are preserved.
 
@@ -41,4 +41,40 @@ The app remains iPhone-only. The Japanese display name is now 生活ボードカ
 
 利用者は9月8日にArchive、アップロード、ストア入力を依頼。最後の審査提出は利用者が行う。
 審査提出・公開は未実施。審査承認後はシリーズ標準の自動リリースを使用する。
-公開前の実機確認は省略した扱いにせず、残項目を利用者へ明示する。
+9月9日、利用者の明示指示で実機VoiceOver音声確認を今回はスキップ。未確認として残す。
+App Store配布版からの更新、過去記録ありの実機更新、TestFlightでの実機確認も未実施。
+
+## Archive・検証・ストア準備結果
+
+- 9月8日、上記コミットから署名付きRelease Archive成功。
+  `/Users/satoutakuya/Library/Developer/Xcode/Archives/2026-09-08/SeikatsuBoardCount-1.0.1-Build2.xcarchive`
+- ArchiveのVersion 1.0.1、Build 2、Bundle ID、Team、arm64を照合し、コード署名検証に成功。
+- 同じコミットのiPhone 17 / iOS 26.5 Simulatorテストは26件成功、失敗・スキップ0件。
+  `/private/tmp/count-release-101-validation.xcresult`。単体23件と復旧UI3件を含む。
+  既知のAppIntents未使用のメタデータ抽出警告のみ。実機VoiceOver確認とは区別する。
+- 9月8日21:50 JST、Xcode Organizerで `1.0.1 (2) uploaded` と `Uploaded to Apple` を確認。
+  Xcodeの通常App Store Connect配布を使用。最終審査提出は実行していない。
+- 9月9日、ChromeのApp Store ConnectでBuild 2の処理完了・選択保存を確認。
+  Build ID: `8e70d6cc-e7d3-44aa-8779-c977e685d3c1`。
+- 次回名称「生活ボードカウント」、名称を合わせた概要、従来のプロモーション文、上記最新情報と審査メモを保存。
+  マーケティングURLへ `https://satou-studio.github.io/seikatsu-board-site/#count` を設定。
+  既存スクリーンショット3枚・サポートURL・キーワード・審査連絡先は維持。
+- 承認後の自動リリース、段階的リリースなし、既存評価を維持、ログイン不要。
+  未検証のVoiceOver対応申告は追加していない。
+- 9月9日05:56 JST、名前変更を含め「審査用に追加」完了。状態は「審査準備完了」。
+  提出物の下書きに `1.0.1 (2)` と有効な **「審査へ提出」** ボタンが表示されたところで停止。
+  [最終操作の画面](https://appstoreconnect.apple.com/apps/6794626819/distribution/ios/version/inflight)
+- この記録はアップロード・提出準備の証拠であり、審査提出・承認・公開の証拠ではない。
+  今回のローカルコミットはGitHubへpushしていない。公開タグは未作成。
+
+## 実機検証中の初期化と復元
+
+- 9月8日の手動確認で、揮発性起動引数の異常値を使った復旧案内から初期化が確定された。
+  実際の保存先は項目0件・記録0件となり、控えには試験用文字列が保存された。
+  この方法は確定操作まで行うと実データを上書きするため、実データ入り端末の手動検証には使用しない。
+- その時点の空状態と控えをMacの一時領域へ保全し、事情と復元限界を利用者へ説明。
+  利用者は前回更新時の控え（項目5件・記録0件）への復元を明示承認した。
+- 9月9日05:57 JST、対象アプリの保存ファイルだけを前回の控えから復元し、テスト引数なしで通常起動。
+  読み戻した保存値が前回控えの元バイト列と完全一致し、項目5件・記録0件であることを確認。
+  それ以降に追加した記録が戻ったという意味ではない。画面表示の利用者確認は別途扱う。
+- 元記録、個人の項目内容、端末の控えはGitやAppleへのアップロードに含めていない。
