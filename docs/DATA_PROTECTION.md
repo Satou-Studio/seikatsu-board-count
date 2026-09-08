@@ -104,9 +104,10 @@ xcodebuild test -project SeikatsuBoardCount.xcodeproj -scheme SeikatsuBoardCount
 
 ## 公開前の残作業
 
-- 実機で公開版からの上書き更新、既存記録、再起動、記録追加・取消を確認する。
+- 開発用旧版からの実機上書き、項目保持、記録追加・再起動後の保持・取消は確認済み（次節）。
+  App Store配布版からの更新と、過去記録ありの実機更新は未確認。完了分とは区別する。
 - 実機VoiceOverで案内から確認・キャンセルまで読み上げと操作順を確認する。
-- 公開Version/Buildの採番・Archive・App Store提出は別のリリース作業として行う。
+- 公開Version/Buildの採番・Archive・App Store準備状況は `RELEASE_1.0.1.md` で管理する。
 
 ## 2026-09-08 実機への上書き更新
 
