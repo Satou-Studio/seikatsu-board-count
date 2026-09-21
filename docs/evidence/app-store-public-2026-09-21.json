@@ -1,0 +1,11 @@
+{
+  "checkedOn": "2026-09-21",
+  "checkedTimezone": "Asia/Tokyo",
+  "source": "https://itunes.apple.com/lookup?id=6794626819&country=jp&entity=software",
+  "note": "Selected public fields only. The public API does not expose the build number or prove device testing.",
+  "trackId": 6794626819,
+  "trackName": "生活ボードカウント",
+  "version": "1.0.1",
+  "currentVersionReleaseDate": "2026-09-09T15:12:21Z",
+  "releaseNotes": "記録をより安心して使い続けられるよう、保存データの読み込みを改善しました。\n\n・記録を読み込めない場合に、見本のデータで自動的に上書きしないようにしました。\n・すべての項目を削除したあと、再起動しても見本が再び追加されないようにしました。\n・読み込みに問題がある場合の案内と、元データの控えを残して空の状態から始める操作を追加しました。\n・アプリの表示名を「生活ボードカウント」に統一しました。"
+}
