@@ -1,0 +1,42 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "F1A5AE3D-C771-40DB-92A9-46D44AFBD0CA",
+        "deviceName" : "Count-Storefront-20261006",
+        "modelName" : "iPhone 17 Pro Max",
+        "osBuildNumber" : "23F77",
+        "osVersion" : "26.5",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 0,
+      "passedTests" : 3,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "SeikatsuBoardCount · Built with macOS 26.6.2",
+  "expectedFailures" : 0,
+  "failedTests" : 0,
+  "finishTime" : 1791288704.656,
+  "passedTests" : 3,
+  "result" : "Passed",
+  "skippedTests" : 0,
+  "startTime" : 1791288628.621,
+  "statistics" : [
+
+  ],
+  "testFailures" : [
+
+  ],
+  "title" : "Test - SeikatsuBoardCount",
+  "topInsights" : [
+
+  ],
+  "totalTestCount" : 3
+}
