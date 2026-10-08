@@ -1,0 +1,54 @@
+# 生活ボードカウント 1.0.2 / Build 3
+
+作業日: 2026-10-09。App Store紹介改善。審査提出・公開は行わない。
+
+## 対象と保全
+
+- Apple ID `6794626819` / Bundle ID `com.saku.seikatsuboardcount`。
+- 作業開始時、アプリ・シリーズ管理リポジトリとも変更なし。双方の最新mainは取り込み済み。
+- 開始コミット `3cb5a8b8573517f006220d19135255f41818f7b6`。
+- 公開中の1.0.1（2）と本番ソース・プロジェクトに差分なしを確認した後、
+  Marketing Versionだけ1.0.2、Build Numberだけ3へ更新。
+- アプリの機能、保存形式、ID、日付キー、0件の扱い、読込失敗時の原本保護は変更なし。
+  実機、他アプリ、サイト、Bundle ID、署名チーム、対応端末は変更なし。
+
+## Apple側の登録
+
+- 公開中1.0.1の概要・検索語は編集不可のため、1.0.2の下書きを作成。
+- 日本語サブタイトル、プロモーション文、概要、検索語を
+  `AppStore/Storefront-2026-10-06/`の最終原稿から保存。
+- 更新説明はストア紹介改善のみを記載。新機能・保存処理変更とは説明しない。
+- 審査メモに実画面・専用iPhone Simulator・複数日の合成記録・画面内非加工を記載。
+- 承認後の自動リリース、段階的リリースなし、既存評価維持、ログイン不要を維持。
+- 日本語のDynamic Island搭載iPhone（大型ディスプレイ）へ1320×2868の3枚を登録。
+  今日→記録→追加の順。中型などの縮小先も同順の既存アセット使用表示を確認。
+- Face ID大型の旧3枚は次回版の登録から解除。アセットライブラリには残し、
+  公開中1.0.1の素材は変更していない。iPad画像は追加していない。
+- Appleの新しい画面では従来の「6.9インチ」ではなく端末群で表示される。
+  寸法の受け入れ案内と保存後の3／10表示を確認した。
+
+## ビルドとアップロード
+
+- Xcode 26.6（17F113）、既存Automatic SigningでRelease Archive成功。
+- Archive: `/private/tmp/SeikatsuBoardCount-1.0.2-Build3.xcarchive`。
+- Version、Build、Bundle ID、Team、arm64を照合。Macの通常環境で署名検証成功。
+  制限環境内の署名確認は信頼エラーだったため、通常環境で再確認した。
+- Xcode GUIは現在のOSとの互換性エラーで起動できなかった。
+  `xcodebuild -exportArchive`の標準App Store Connect配布を使用。
+- 2026-10-09 06:25 JST、`Upload succeeded` / `EXPORT SUCCEEDED`を確認。
+  アップロード成功とApple側の処理完了・ビルド選択・審査提出は区別する。
+- ログは一時領域 `/private/tmp/count-release-102-archive.log`、
+  `/private/tmp/count-release-102-upload.log`。認証情報・配布署名資産をGitへ含めない。
+
+## 検証と残作業
+
+- 専用Simulator `Count-Storefront-20261006` / iPhone 17 Pro Max / iOS 26.5で26件を実行。
+  25件成功、ダーク表示のアクセシビリティ自動検査1件は時間切れ。
+  同じ環境で失敗した1件だけ再実行し、06:26 JSTに成功。
+  全26件が成功した結果を確認したが、初回の時間切れは隠さず記録する。
+  初回と再検査の要約は制作フォルダの`evidence/release-102-*-summary.json`。
+- 既存の記録保護・互換性の単体23件は成功。アプリコードは変更していない。
+- App Store配布版からの実機更新、過去記録入り実機更新、実機VoiceOverは未確認。
+- 現時点ではApple側の処理完了とビルド選択、審査用追加が残る。
+  最終「審査へ提出」は利用者へ引き継ぐ。
+- 画像登録確認画面: `AppStore/Storefront-2026-10-06/evidence/connect-images-2026-10-09.jpg`。

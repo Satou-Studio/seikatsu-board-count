@@ -1,0 +1,49 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "F1A5AE3D-C771-40DB-92A9-46D44AFBD0CA",
+        "deviceName" : "Count-Storefront-20261006",
+        "modelName" : "iPhone 17 Pro Max",
+        "osBuildNumber" : "23F77",
+        "osVersion" : "26.5",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 1,
+      "passedTests" : 25,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "SeikatsuBoardCount · Built with macOS 27.0.1",
+  "expectedFailures" : 0,
+  "failedTests" : 1,
+  "finishTime" : 1791494693.126,
+  "passedTests" : 25,
+  "result" : "Failed",
+  "skippedTests" : 0,
+  "startTime" : 1791494305.224,
+  "statistics" : [
+
+  ],
+  "testFailures" : [
+    {
+      "failureText" : "failed: caught error: \"Error Domain=com.apple.xcode.xctest.accessibilityAudit Code=-56 \"Audit failed to complete in time\" UserInfo={NSLocalizedDescription=Audit failed to complete in time}\"",
+      "targetName" : "SeikatsuBoardCountUITests",
+      "testIdentifier" : 1,
+      "testIdentifierString" : "RecoveryUITests/testRecoveryDarkAccessibility()",
+      "testIdentifierURL" : "test://com.apple.xcode/SeikatsuBoardCount/SeikatsuBoardCountUITests/RecoveryUITests/testRecoveryDarkAccessibility",
+      "testName" : "testRecoveryDarkAccessibility()"
+    }
+  ],
+  "title" : "Test - SeikatsuBoardCount",
+  "topInsights" : [
+
+  ],
+  "totalTestCount" : 26
+}
