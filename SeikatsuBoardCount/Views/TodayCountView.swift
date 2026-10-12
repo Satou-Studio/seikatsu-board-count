@@ -45,6 +45,8 @@ struct TodayCountView: View {
                             }
                             .opacity(draggedItem?.id == item.id ? 0 : 1)
                         }
+                        ParentSupportEntry()
+                            .foregroundStyle(Color.appSecondaryText)
                     }
                     .animation(
                         .spring(response: 0.48, dampingFraction: 0.72),

@@ -2,6 +2,124 @@ import XCTest
 
 final class RecoveryUITests: XCTestCase {
     @MainActor
+    func testParentSupportFromTodayDoesNotReplaceChildControls() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(ja)", "-AppleLocale", "ja_JP"]
+        app.launch()
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["できたをふやす"].exists)
+        XCTAssertTrue(app.buttons["きろくするひをえらぶ"].exists)
+        screenshot(app, name: "parent-support-today-top")
+        for _ in 0..<12 {
+            if app.buttons["support.entry"].isHittable { break }
+            app.swipeUp()
+        }
+        XCTAssertTrue(app.buttons["support.entry"].isHittable)
+        screenshot(app, name: "parent-support-today-entry")
+        app.buttons["support.entry"].tap()
+        XCTAssertTrue(app.buttons["support.close"].waitForExistence(timeout: 3))
+        app.buttons["support.close"].tap()
+        XCTAssertTrue(app.tabBars.firstMatch.exists)
+        XCTAssertTrue(app.buttons["support.entry"].waitForExistence(timeout: 3))
+    }
+
+    @MainActor
+    func testParentSupportFromRecoveryAndMailFallback() throws {
+        let app = launchRecovery(style: "Light")
+        app.swipeUp()
+        let entry = app.buttons["support.entry"]
+        XCTAssertTrue(entry.waitForExistence(timeout: 3))
+        entry.tap()
+        XCTAssertTrue(app.buttons["support.help"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons["support.review"].exists)
+        XCTAssertTrue(app.staticTexts["support.address"].exists)
+        for (id, label) in [("support.help", "使い方・お問い合わせ"), ("support.mail", "ご意見をメールで送る"), ("support.review", "App Storeでレビューを書く")] {
+            XCTAssertTrue(app.buttons[id].label.contains(label))
+            XCTAssertGreaterThanOrEqual(app.buttons[id].frame.height, 44)
+        }
+        XCTAssertLessThan(app.buttons["support.help"].frame.minY, app.buttons["support.mail"].frame.minY)
+        XCTAssertLessThan(app.buttons["support.mail"].frame.minY, app.buttons["support.review"].frame.minY)
+        XCTAssertEqual(app.staticTexts["support.address"].label, "お問い合わせのメールアドレス")
+        screenshot(app, name: "parent-support-light")
+        app.buttons["support.mail"].tap()
+        // Dedicated Simulator has no configured mail account; no real send is attempted.
+        XCTAssertTrue(app.buttons["support.mailFallbackClose"].waitForExistence(timeout: 3))
+        screenshot(app, name: "parent-support-mail-unavailable")
+        app.buttons["support.mailFallbackClose"].tap()
+        XCTAssertTrue(app.buttons["support.help"].waitForExistence(timeout: 3))
+        // Dynamic Type is exercised separately at the largest size, including scrolling.
+        // The system audit reports partial support for Form/toolbar text; retain that
+        // finding in the verification record rather than claiming a full audit pass.
+        try app.performAccessibilityAudit(for: .all.subtracting(.dynamicType))
+        app.buttons["support.close"].tap()
+        XCTAssertTrue(app.buttons["recovery.retry"].waitForExistence(timeout: 3))
+        app.terminate()
+        app.launch()
+        XCTAssertTrue(app.staticTexts["記録を読み込めませんでした"].waitForExistence(timeout: 10))
+    }
+
+    @MainActor
+    func testParentSupportLargestText() throws {
+        let app = launchRecovery(style: "Dark", largeText: true)
+        for _ in 0..<10 {
+            if app.buttons["support.entry"].isHittable { break }
+            app.swipeUp()
+        }
+        app.buttons["support.entry"].tap()
+        XCTAssertTrue(app.buttons["support.close"].waitForExistence(timeout: 3))
+        screenshot(app, name: "parent-support-largest-text-top")
+        for id in ["support.help", "support.mail", "support.review"] {
+            for _ in 0..<10 {
+                if app.buttons[id].isHittable { break }
+                app.swipeUp()
+            }
+            XCTAssertTrue(app.buttons[id].isHittable)
+            XCTAssertGreaterThanOrEqual(app.buttons[id].frame.height, 44)
+        }
+        app.swipeUp()
+        screenshot(app, name: "parent-support-largest-text-bottom")
+        app.buttons["support.close"].tap()
+        XCTAssertTrue(app.buttons["support.entry"].waitForExistence(timeout: 3))
+    }
+
+    @MainActor
+    func testSupportLinkAndReturnWithoutSending() async throws {
+        // Remove the unsupported App Store URL left in Simulator Safari by a
+        // previous run. Only run this suite on the dedicated test Simulator.
+        let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+        safari.terminate()
+        let app = launchRecovery(style: "Light")
+        app.swipeUp()
+        app.buttons["support.entry"].tap()
+        XCTAssertTrue(app.buttons["support.help"].waitForExistence(timeout: 3))
+        app.buttons["support.help"].tap()
+        guard safari.wait(for: .runningForeground, timeout: 15) else {
+            XCTFail("Simulator did not foreground Safari after the support action")
+            return
+        }
+        let supportHeading = safari.webViews.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "生活ボードカウント")).firstMatch
+        XCTAssertTrue(supportHeading.waitForExistence(timeout: 30))
+        XCTAssertTrue(supportHeading.isHittable)
+        // The web accessibility tree can arrive before the rendered page surface.
+        try await Task.sleep(for: .seconds(1))
+        screenshot(safari, name: "parent-support-browser-destination")
+        app.activate()
+        XCTAssertTrue(app.buttons["support.review"].waitForExistence(timeout: 5))
+        app.buttons["support.review"].tap()
+        let reviewAttachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        reviewAttachment.name = "parent-support-review-simulator-result"
+        reviewAttachment.lifetime = .keepAlways
+        add(reviewAttachment)
+        app.activate()
+        if app.alerts.firstMatch.exists {
+            app.alerts.buttons["閉じる"].tap()
+        }
+        XCTAssertTrue(app.buttons["support.close"].exists)
+        app.buttons["support.close"].tap()
+        XCTAssertTrue(app.buttons["recovery.retry"].waitForExistence(timeout: 3))
+    }
+
+    @MainActor
     private func launchRecovery(style: String, largeText: Bool = false) -> XCUIApplication {
         let previousAppearance = XCUIDevice.shared.appearance
         XCUIDevice.shared.appearance = style == "Dark" ? .dark : .light

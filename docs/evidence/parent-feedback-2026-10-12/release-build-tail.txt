@@ -1,0 +1,7 @@
+PruneExplicitPrecompiledModules /tmp/count-feedback-release/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /tmp/count-feedback-release/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /tmp/count-feedback-release/SDKExplicitPrecompiledModules
+
+** BUILD SUCCEEDED **

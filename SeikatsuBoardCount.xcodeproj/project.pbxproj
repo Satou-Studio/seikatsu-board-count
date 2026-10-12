@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C04000000000000000000001 /* ParentSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04000000000000000000002; };
 		C03000000000000000000001 = {isa = PBXBuildFile; fileRef = C03000000000000000000002; };
 		C02000000000000000000001 = {isa = PBXBuildFile; fileRef = C02000000000000000000002; };
 		C01000000000000000000001 /* CountStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01000000000000000000002; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C04000000000000000000002 /* ParentSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentSupportView.swift; sourceTree = "<group>"; };
 		C03000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeikatsuBoardCountUITests/RecoveryUITests.swift; sourceTree = SOURCE_ROOT; };
 		C03000000000000000000003 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = SeikatsuBoardCountUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C02000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Resources/Localizable.xcstrings; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				8B1001082C2EA00000100001 /* TodayCountView.swift */,
 				8B1001092C2EA00000100001 /* HistoryView.swift */,
 				8B10010C2C2EA00000100001 /* CountItemEditorView.swift */,
+				C04000000000000000000002 /* ParentSupportView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -227,6 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B1000012C2EA00000100001 /* SeikatsuBoardCountApp.swift in Sources */,
+				C04000000000000000000001 /* ParentSupportView.swift in Sources */,
 				8B1000022C2EA00000100001 /* CountItem.swift in Sources */,
 				8B1000032C2EA00000100001 /* CountRecord.swift in Sources */,
 				8B1000042C2EA00000100001 /* CalendarHelper.swift in Sources */,

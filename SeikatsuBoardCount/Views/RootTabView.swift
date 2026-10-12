@@ -63,6 +63,7 @@ private struct CountRecoveryView: View {
                 }
                 .buttonStyle(.bordered)
                 .accessibilityIdentifier("recovery.startOver")
+                ParentSupportEntry()
             }
             .font(.body)
             .fixedSize(horizontal: false, vertical: true)
