@@ -13,7 +13,24 @@ App ID 6794626819、Version 1.1／Build 7。外部テスター・公開リンク
 
 ## 配布結果
 
-作成・アップロード・Apple処理・本人用割当はそれぞれ完了確認後に追記する。
+- 配布元コミット：`e527a277502f28dd3e2eb4999d3c70570bb3ca40`。
+- Release Archive成功：`/private/tmp/Count-1.1-Build7-20261028.xcarchive`。
+  生成物の1.1／7、Bundle ID `com.saku.seikatsuboardcount`、Team `4W95W79JT2`、arm64を確認。
+  署名の厳密検証成功。Archive作成後、元コミットとアプリ本体・プロジェクト間に差分なし。
+- 採番後の単体24件成功、失敗・スキップ0。
+  結果：`evidence/parent-support-no-mail-2026-10-28/build7-unit-summary.json`。
+- 18:58:01 JST、アップロード成功（`Upload succeeded`／`EXPORT SUCCEEDED`）。
+  一時ログ：`/private/tmp/count-no-mail-build7-upload.log`。署名資産はGitへ追加しない。
+- Apple処理完了後、Build ID `c45a98f0-90ab-4d4d-9c07-978522a8f1b9`を確認。
+- Build 7の日本語「テスト内容」へ、メール削除・2導線・記録保持・再起動・追加取消・明暗／最大文字／
+  VoiceOverと投稿せず戻る確認項目を保存した。一般公開向けの概要・更新説明・審査メモは編集しない。
+- 既存の内部グループ「本人確認用」（1名、グループID `81c6356d-ae0e-4246-8299-d57f0e6110cb`）へ追加。
+  グループのビルド一覧で**1.1（7）「テスト中」・期限90日**を確認。既存Build 4は削除せず維持。
+  外部グループ・公開リンク・新しいテスターは追加せず、自動配布などのグループ設定も変更しない。
+- [配布完了画面](evidence/parent-support-no-mail-2026-10-28/testflight-build7-distributed.png)。
+  操作中のタイムアウトは画面を読み直して確認し、最終的な割当成功を確認。重複グループ作成なし。
+- 本人のiPhoneでのBuild 7インストール・実機操作と通知メールの受信は未確認。
+  App Store版のビルド選択・審査用追加・最終提出・一般公開は実施していない。
 
 ## 実機確認
 
