@@ -82,19 +82,26 @@ struct ParentSupportView: View {
             }
             .sheet(isPresented: $showingMailFallback) {
                 NavigationStack {
-                    Form {
-                        Section {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 24) {
                             Text("support.mailUnavailable").fixedSize(horizontal: false, vertical: true)
+                            Text("support.mailUnavailableDetail").fixedSize(horizontal: false, vertical: true)
                             Text(verbatim: ParentSupportContent.email)
                                 .textSelection(.enabled)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .accessibilityLabel(Text("support.emailAddress"))
                                 .accessibilityValue(ParentSupportContent.email)
                             Text(ParentSupportContent.subject).textSelection(.enabled)
+                                .font(.body)
                                 .fixedSize(horizontal: false, vertical: true)
                             Text(ParentSupportContent.body).textSelection(.enabled)
+                                .font(.body)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
+                        .font(.body)
+                        .lineSpacing(6)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(20)
                     }
                     .safeAreaInset(edge: .top) {
                         supportHeader(title: "support.mail", closeID: "support.mailFallbackClose") {

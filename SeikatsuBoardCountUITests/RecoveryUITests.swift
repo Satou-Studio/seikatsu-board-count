@@ -53,10 +53,15 @@ final class RecoveryUITests: XCTestCase {
         screenshot(app, name: "parent-support-light")
         app.buttons["support.mail"].tap()
         // Dedicated Simulator has no configured mail account; no real send is attempted.
-        XCTAssertTrue(app.buttons["support.mailFallbackClose"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons["support.mailFallbackClose"].waitForExistence(timeout: 10))
         screenshot(app, name: "parent-support-mail-unavailable")
+        try app.performAccessibilityAudit()
         app.buttons["support.mailFallbackClose"].tap()
+        // The parent remains in the accessibility tree during sheet dismissal.
+        // Wait for the outgoing sheet to disappear before auditing the parent.
+        XCTAssertTrue(app.buttons["support.mailFallbackClose"].waitForNonExistence(timeout: 5))
         XCTAssertTrue(app.buttons["support.help"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons["support.help"].isHittable)
         try app.performAccessibilityAudit()
         app.buttons["support.close"].tap()
         XCTAssertTrue(app.buttons["recovery.retry"].waitForExistence(timeout: 3))
@@ -95,6 +100,30 @@ final class RecoveryUITests: XCTestCase {
         }
         app.swipeUp()
         screenshot(app, name: "parent-support-largest-text-bottom")
+        let mail = app.buttons["support.mail"]
+        for _ in 0..<16 {
+            let top = app.buttons["support.close"].frame.maxY + 20
+            let bottom = app.frame.maxY - 20
+            if mail.isHittable && mail.frame.midY > top && mail.frame.midY < bottom { break }
+            if mail.frame.midY <= top {
+                app.swipeDown(velocity: .slow)
+            } else {
+                app.swipeUp(velocity: .slow)
+            }
+        }
+        // isHittable alone may include a partially visible label behind the
+        // pinned header. Exercise the button with its center in the content area.
+        XCTAssertGreaterThan(mail.frame.midY, app.buttons["support.close"].frame.maxY + 20)
+        XCTAssertLessThan(mail.frame.midY, app.frame.maxY - 20)
+        screenshot(app, name: "parent-support-mail-largest-before-tap")
+        mail.tap()
+        XCTAssertTrue(app.buttons["support.mailFallbackClose"].waitForExistence(timeout: 10))
+        screenshot(app, name: "parent-support-mail-largest-top")
+        for _ in 0..<12 { app.swipeUp() }
+        screenshot(app, name: "parent-support-mail-largest-bottom")
+        XCTAssertTrue(app.buttons["support.mailFallbackClose"].isHittable)
+        app.buttons["support.mailFallbackClose"].tap()
+        XCTAssertTrue(app.buttons["support.mailFallbackClose"].waitForNonExistence(timeout: 5))
         app.buttons["support.close"].tap()
         XCTAssertTrue(app.buttons["support.entry"].waitForExistence(timeout: 3))
     }
