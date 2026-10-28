@@ -25,7 +25,17 @@ final class RecoveryUITests: XCTestCase {
 
     @MainActor
     func testParentSupportFromRecoveryAndMailFallback() throws {
-        let app = launchRecovery(style: "Light")
+        try verifyParentSupportAndMailFallback(style: "Light")
+    }
+
+    @MainActor
+    func testParentSupportDarkAuditAndMailFallback() throws {
+        try verifyParentSupportAndMailFallback(style: "Dark")
+    }
+
+    @MainActor
+    private func verifyParentSupportAndMailFallback(style: String) throws {
+        let app = launchRecovery(style: style)
         app.swipeUp()
         let entry = app.buttons["support.entry"]
         XCTAssertTrue(entry.waitForExistence(timeout: 3))
@@ -47,10 +57,7 @@ final class RecoveryUITests: XCTestCase {
         screenshot(app, name: "parent-support-mail-unavailable")
         app.buttons["support.mailFallbackClose"].tap()
         XCTAssertTrue(app.buttons["support.help"].waitForExistence(timeout: 3))
-        // Dynamic Type is exercised separately at the largest size, including scrolling.
-        // The system audit reports partial support for Form/toolbar text; retain that
-        // finding in the verification record rather than claiming a full audit pass.
-        try app.performAccessibilityAudit(for: .all.subtracting(.dynamicType))
+        try app.performAccessibilityAudit()
         app.buttons["support.close"].tap()
         XCTAssertTrue(app.buttons["recovery.retry"].waitForExistence(timeout: 3))
         app.terminate()
@@ -60,7 +67,17 @@ final class RecoveryUITests: XCTestCase {
 
     @MainActor
     func testParentSupportLargestText() throws {
-        let app = launchRecovery(style: "Dark", largeText: true)
+        try verifyParentSupportLargestText(style: "Dark")
+    }
+
+    @MainActor
+    func testParentSupportLargestTextLight() throws {
+        try verifyParentSupportLargestText(style: "Light")
+    }
+
+    @MainActor
+    private func verifyParentSupportLargestText(style: String) throws {
+        let app = launchRecovery(style: style, largeText: true)
         for _ in 0..<10 {
             if app.buttons["support.entry"].isHittable { break }
             app.swipeUp()
@@ -165,6 +182,10 @@ final class RecoveryUITests: XCTestCase {
         let app = launchRecovery(style: "Dark")
         screenshot(app, name: "recovery-dark")
         try app.performAccessibilityAudit()
+        for _ in 0..<8 {
+            if app.buttons["recovery.startOver"].isHittable { break }
+            app.swipeUp()
+        }
         XCTAssertTrue(app.buttons["recovery.retry"].isHittable)
         XCTAssertTrue(app.buttons["recovery.startOver"].isHittable)
     }

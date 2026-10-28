@@ -1,0 +1,56 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "3889CA7D-F950-44ED-9E8F-57C7741CBC4C",
+        "deviceName" : "Count-Feedback-Small-20261011",
+        "modelName" : "iPhone SE (3rd generation)",
+        "osBuildNumber" : "23F77",
+        "osVersion" : "26.5",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 1,
+      "passedTests" : 0,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "SeikatsuBoardCount · Built with macOS 27.0.1",
+  "expectedFailures" : 0,
+  "failedTests" : 1,
+  "finishTime" : 1793156744.177,
+  "passedTests" : 0,
+  "result" : "Failed",
+  "runtimeWarnings" : [
+
+  ],
+  "skippedTests" : 0,
+  "startTime" : 1793156681.639,
+  "statistics" : [
+
+  ],
+  "testFailures" : [
+    {
+      "failureText" : "Dynamic Type font sizes are partially unsupported",
+      "targetName" : "SeikatsuBoardCountUITests",
+      "testIdentifier" : 1,
+      "testIdentifierString" : "RecoveryUITests/testParentSupportFromRecoveryAndMailFallback()",
+      "testIdentifierURL" : "test://com.apple.xcode/SeikatsuBoardCount/SeikatsuBoardCountUITests/RecoveryUITests/testParentSupportFromRecoveryAndMailFallback",
+      "testName" : "testParentSupportFromRecoveryAndMailFallback()"
+    }
+  ],
+  "title" : "Test - SeikatsuBoardCount",
+  "topInsights" : [
+    {
+      "category" : "Common Failures",
+      "impact" : "100% of failures",
+      "text" : "4 runs of 1 test failed with Dynamic Type font sizes are partially unsupported"
+    }
+  ],
+  "totalTestCount" : 1
+}

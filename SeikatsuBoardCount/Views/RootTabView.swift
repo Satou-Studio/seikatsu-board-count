@@ -39,9 +39,16 @@ private struct CountRecoveryView: View {
                     .accessibilityHidden(true)
                 Text("recovery.title")
                     .font(.title2.bold())
+                    .fixedSize(horizontal: false, vertical: true)
                     .accessibilityAddTraits(.isHeader)
                 Text("recovery.explanation")
+                    .fixedSize(horizontal: false, vertical: true)
                 Text("recovery.options")
+                    .fixedSize(horizontal: false, vertical: true)
+                Text("recovery.backupLimit")
+                    .fixedSize(horizontal: false, vertical: true)
+                Text("recovery.keepApp")
+                    .fixedSize(horizontal: false, vertical: true)
                 if store.recoveryBackupFailed {
                     Text("recovery.backupFailed")
                         .fontWeight(.semibold)
@@ -49,6 +56,7 @@ private struct CountRecoveryView: View {
                 }
                 Button(action: store.retryLoading) {
                     Text("recovery.retry")
+                        .fixedSize(horizontal: false, vertical: true)
                         .frame(maxWidth: .infinity, minHeight: 44)
                         .padding(8)
                 }
@@ -58,6 +66,7 @@ private struct CountRecoveryView: View {
                     confirmingStartOver = true
                 } label: {
                     Text("recovery.startOver")
+                        .fixedSize(horizontal: false, vertical: true)
                         .frame(maxWidth: .infinity, minHeight: 44)
                         .padding(8)
                 }
@@ -66,7 +75,7 @@ private struct CountRecoveryView: View {
                 ParentSupportEntry()
             }
             .font(.body)
-            .fixedSize(horizontal: false, vertical: true)
+            .lineSpacing(6)
             .padding(24)
             .frame(maxWidth: 560, alignment: .leading)
             .frame(maxWidth: .infinity)

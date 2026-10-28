@@ -37,8 +37,9 @@ struct ParentSupportView: View {
 
     var body: some View {
         NavigationStack {
-            Form {
-                Section {
+            ScrollView {
+              VStack(alignment: .leading, spacing: 24) {
+                VStack(alignment: .leading, spacing: 16) {
                     Text("support.introduction")
                     action("support.help", detail: "support.webDetail", icon: "questionmark.circle", id: "support.help") {
                         open(ParentSupportContent.supportURL)
@@ -54,7 +55,10 @@ struct ParentSupportView: View {
                         open(ParentSupportContent.reviewURL)
                     }
                 }
-                Section("support.contact") {
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("support.contact")
+                        .font(.headline)
+                        .accessibilityAddTraits(.isHeader)
                     Text(verbatim: ParentSupportContent.email)
                         .textSelection(.enabled)
                         .fixedSize(horizontal: false, vertical: true)
@@ -64,15 +68,13 @@ struct ParentSupportView: View {
                     Text("support.privacy")
                     Text("support.manualSending")
                 }
+              }
+              .font(.body)
+              .fixedSize(horizontal: false, vertical: true)
+              .padding(20)
             }
-            .navigationTitle("support.title")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("support.close") { dismiss() }
-                        .frame(minWidth: 44, minHeight: 44)
-                        .accessibilityIdentifier("support.close")
-                }
+            .safeAreaInset(edge: .top) {
+                supportHeader(title: "support.title", closeID: "support.close") { dismiss() }
             }
             .sheet(isPresented: $showingMail) {
                 FeedbackMailComposer(isPresented: $showingMail)
@@ -94,13 +96,9 @@ struct ParentSupportView: View {
                                 .fixedSize(horizontal: false, vertical: true)
                         }
                     }
-                    .navigationTitle("support.mail")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button("support.close") { showingMailFallback = false }
-                                .frame(minWidth: 44, minHeight: 44)
-                                .accessibilityIdentifier("support.mailFallbackClose")
+                    .safeAreaInset(edge: .top) {
+                        supportHeader(title: "support.mail", closeID: "support.mailFallbackClose") {
+                            showingMailFallback = false
                         }
                     }
                 }
@@ -112,6 +110,28 @@ struct ParentSupportView: View {
             }
         }
         .tint(.primary)
+    }
+
+    // Navigation-bar text caps its scaling on small screens. Keep the close
+    // action outside that bar so it follows the full accessibility size range.
+    private func supportHeader(title: LocalizedStringKey, closeID: String, close: @escaping () -> Void) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            Text(title)
+                .font(.headline)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityAddTraits(.isHeader)
+            Spacer(minLength: 0)
+            Button(action: close) {
+                Text("support.close")
+                    .font(.body)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(minWidth: 44, minHeight: 44)
+            }
+            .accessibilityIdentifier(closeID)
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 8)
+        .background(Color(uiColor: .systemBackground))
     }
 
     private func action(_ title: LocalizedStringKey, detail: LocalizedStringKey, icon: String, id: String, perform: @escaping () -> Void) -> some View {

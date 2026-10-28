@@ -1,0 +1,9 @@
+Version 1.1 adds an optional parent support sheet. Open Today, scroll below the items, and tap 保護者の方へ. The same entry is available at the end of the read-error screen.
+
+The sheet offers the Count support website, an optional email draft to satoustudio.apps@gmail.com using Apple's MessageUI, and a manual review link for this exact app (Apple ID 6794626819). The user decides whether to send or post. There are no automatic review prompts, rating filters, rewards, or requests for positive reviews. If Mail is not configured, the address and optional draft template are displayed for copying.
+
+No records, recovery backups, device information, or attachments are read or automatically transmitted by these actions. The draft warns users not to send children's names, photos, or actual records. No login, ads, purchases, analytics SDKs, tracking, or external data server has been added.
+
+The existing storage key, schema, item and record IDs, and date keys are unchanged. Read failures still protect the original data, and a valid empty state remains empty. The app remains iPhone-only with iOS 17 or later.
+
+Please use the normal Today entry to review the support sheet. Do not initialize records on a device with existing user data. The read-error reset still requires explicit confirmation and preserves a local original copy; it is not a guaranteed record recovery feature.
