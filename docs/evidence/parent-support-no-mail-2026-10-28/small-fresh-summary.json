@@ -1,0 +1,52 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "3889CA7D-F950-44ED-9E8F-57C7741CBC4C",
+        "deviceName" : "Count-Feedback-Small-20261011",
+        "modelName" : "iPhone SE (3rd generation)",
+        "osBuildNumber" : "23F77",
+        "osVersion" : "26.5",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 1,
+      "passedTests" : 32,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "SeikatsuBoardCount · Built with macOS 27.0.1",
+  "expectedFailures" : 0,
+  "failedTests" : 1,
+  "finishTime" : 1793175236.754,
+  "passedTests" : 32,
+  "result" : "Failed",
+  "runtimeWarnings" : [
+
+  ],
+  "skippedTests" : 0,
+  "startTime" : 1793175058.011,
+  "statistics" : [
+
+  ],
+  "testFailures" : [
+    {
+      "failureText" : "XCTAssertTrue failed",
+      "targetName" : "SeikatsuBoardCountUITests",
+      "testIdentifier" : 1,
+      "testIdentifierString" : "RecoveryUITests/testParentSupportDarkAudit()",
+      "testIdentifierURL" : "test://com.apple.xcode/SeikatsuBoardCount/SeikatsuBoardCountUITests/RecoveryUITests/testParentSupportDarkAudit",
+      "testName" : "testParentSupportDarkAudit()"
+    }
+  ],
+  "title" : "Test - SeikatsuBoardCount",
+  "topInsights" : [
+
+  ],
+  "totalTestCount" : 33
+}

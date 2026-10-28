@@ -24,44 +24,39 @@ final class RecoveryUITests: XCTestCase {
     }
 
     @MainActor
-    func testParentSupportFromRecoveryAndMailFallback() throws {
-        try verifyParentSupportAndMailFallback(style: "Light")
+    func testParentSupportFromRecovery() throws {
+        try verifyParentSupport(style: "Light")
     }
 
     @MainActor
-    func testParentSupportDarkAuditAndMailFallback() throws {
-        try verifyParentSupportAndMailFallback(style: "Dark")
+    func testParentSupportDarkAudit() throws {
+        try verifyParentSupport(style: "Dark")
     }
 
     @MainActor
-    private func verifyParentSupportAndMailFallback(style: String) throws {
+    private func verifyParentSupport(style: String) throws {
         let app = launchRecovery(style: style)
         app.swipeUp()
         let entry = app.buttons["support.entry"]
         XCTAssertTrue(entry.waitForExistence(timeout: 3))
+        XCTAssertTrue(entry.isHittable)
+        screenshot(app, name: "parent-support-before-opening-" + style.lowercased())
         entry.tap()
-        XCTAssertTrue(app.buttons["support.help"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons["support.help"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.buttons["support.review"].exists)
-        XCTAssertTrue(app.staticTexts["support.address"].exists)
-        for (id, label) in [("support.help", "使い方・お問い合わせ"), ("support.mail", "ご意見をメールで送る"), ("support.review", "App Storeでレビューを書く")] {
+        XCTAssertFalse(app.buttons["support.mail"].exists)
+        XCTAssertFalse(app.staticTexts["support.address"].exists)
+        XCTAssertFalse(app.staticTexts["satoustudio.apps@gmail.com"].exists)
+        for (id, label) in [("support.review", "App Storeでレビューを書く"), ("support.help", "使い方・お問い合わせ")] {
             XCTAssertTrue(app.buttons[id].label.contains(label))
             XCTAssertGreaterThanOrEqual(app.buttons[id].frame.height, 44)
         }
-        XCTAssertLessThan(app.buttons["support.help"].frame.minY, app.buttons["support.mail"].frame.minY)
-        XCTAssertLessThan(app.buttons["support.mail"].frame.minY, app.buttons["support.review"].frame.minY)
-        XCTAssertEqual(app.staticTexts["support.address"].label, "お問い合わせのメールアドレス")
-        screenshot(app, name: "parent-support-light")
-        app.buttons["support.mail"].tap()
-        // Dedicated Simulator has no configured mail account; no real send is attempted.
-        XCTAssertTrue(app.buttons["support.mailFallbackClose"].waitForExistence(timeout: 10))
-        screenshot(app, name: "parent-support-mail-unavailable")
-        try app.performAccessibilityAudit()
-        app.buttons["support.mailFallbackClose"].tap()
-        // The parent remains in the accessibility tree during sheet dismissal.
-        // Wait for the outgoing sheet to disappear before auditing the parent.
-        XCTAssertTrue(app.buttons["support.mailFallbackClose"].waitForNonExistence(timeout: 5))
-        XCTAssertTrue(app.buttons["support.help"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.buttons["support.help"].isHittable)
+        XCTAssertLessThan(app.buttons["support.review"].frame.minY, app.buttons["support.help"].frame.minY)
+        // The accessibility tree also contains the recovery screen behind the
+        // sheet. Count only support-sheet controls, not those background actions.
+        let sheetControls = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@ AND identifier != %@", "support.", "support.entry"))
+        XCTAssertEqual(sheetControls.count, 3)
+        screenshot(app, name: "parent-support-" + style.lowercased())
         try app.performAccessibilityAudit()
         app.buttons["support.close"].tap()
         XCTAssertTrue(app.buttons["recovery.retry"].waitForExistence(timeout: 3))
@@ -90,7 +85,7 @@ final class RecoveryUITests: XCTestCase {
         app.buttons["support.entry"].tap()
         XCTAssertTrue(app.buttons["support.close"].waitForExistence(timeout: 3))
         screenshot(app, name: "parent-support-largest-text-top")
-        for id in ["support.help", "support.mail", "support.review"] {
+        for id in ["support.review", "support.help"] {
             for _ in 0..<10 {
                 if app.buttons[id].isHittable { break }
                 app.swipeUp()
@@ -100,30 +95,8 @@ final class RecoveryUITests: XCTestCase {
         }
         app.swipeUp()
         screenshot(app, name: "parent-support-largest-text-bottom")
-        let mail = app.buttons["support.mail"]
-        for _ in 0..<16 {
-            let top = app.buttons["support.close"].frame.maxY + 20
-            let bottom = app.frame.maxY - 20
-            if mail.isHittable && mail.frame.midY > top && mail.frame.midY < bottom { break }
-            if mail.frame.midY <= top {
-                app.swipeDown(velocity: .slow)
-            } else {
-                app.swipeUp(velocity: .slow)
-            }
-        }
-        // isHittable alone may include a partially visible label behind the
-        // pinned header. Exercise the button with its center in the content area.
-        XCTAssertGreaterThan(mail.frame.midY, app.buttons["support.close"].frame.maxY + 20)
-        XCTAssertLessThan(mail.frame.midY, app.frame.maxY - 20)
-        screenshot(app, name: "parent-support-mail-largest-before-tap")
-        mail.tap()
-        XCTAssertTrue(app.buttons["support.mailFallbackClose"].waitForExistence(timeout: 10))
-        screenshot(app, name: "parent-support-mail-largest-top")
-        for _ in 0..<12 { app.swipeUp() }
-        screenshot(app, name: "parent-support-mail-largest-bottom")
-        XCTAssertTrue(app.buttons["support.mailFallbackClose"].isHittable)
-        app.buttons["support.mailFallbackClose"].tap()
-        XCTAssertTrue(app.buttons["support.mailFallbackClose"].waitForNonExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["support.mail"].exists)
+        XCTAssertFalse(app.staticTexts["support.address"].exists)
         app.buttons["support.close"].tap()
         XCTAssertTrue(app.buttons["support.entry"].waitForExistence(timeout: 3))
     }

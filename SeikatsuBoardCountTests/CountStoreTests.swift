@@ -28,17 +28,13 @@ final class CountStoreTests: XCTestCase {
         XCTAssertEqual(CountStore(defaults: defaults).items, first.items)
     }
 
-    func testFeedbackDestinationsAndDraftHaveNoRecordAccess() {
-        XCTAssertEqual(ParentSupportContent.email, "satoustudio.apps@gmail.com")
+    func testParentSupportDestinationsHaveNoRecordAccess() {
         XCTAssertEqual(ParentSupportContent.supportURL.absoluteString, "https://satou-studio.github.io/seikatsu-board-site/count-support.html")
         XCTAssertEqual(ParentSupportContent.reviewURL.absoluteString, "https://apps.apple.com/app/id6794626819?action=write-review")
-        XCTAssertTrue(ParentSupportContent.subject.contains("生活ボードカウント"))
-        for prompt in ["どんな場面で使っているか", "どこで迷ったか・困ったか", "要望・感想", "任意", "個人情報は送らない"] {
-            XCTAssertTrue(ParentSupportContent.body.contains(prompt))
-        }
         let original = legacy
         defaults.set(original, forKey: key)
-        _ = ParentSupportContent.body
+        _ = ParentSupportContent.reviewURL
+        _ = ParentSupportContent.supportURL
         XCTAssertEqual(defaults.data(forKey: key), original)
     }
 
